@@ -1,4 +1,4 @@
-﻿<Window x:Class="MarkIt.MainWindow"
+﻿<Window x:Class="MarkIt.LoginAndSignUpWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -62,14 +62,15 @@
                             ToolTip="点击以登录系统"
                             FontSize="18.667"
                             FontWeight="Bold"
-                            RenderTransformOrigin="0.5,0.5">
+                            RenderTransformOrigin="0.5,0.5"
+                            Click="LogInButton_Click">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="0.5,1"
                                                  MappingMode="RelativeToBoundingBox"
                                                  StartPoint="0.5,0">
-                                <GradientStop Color="#FFBDFA54"
+                                <GradientStop Color="#FFBDFA54" />
+                                <GradientStop Color="#FF2FB507"
                                               Offset="1" />
-                                <GradientStop Color="#FF2FB507" />
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
@@ -92,12 +93,6 @@
                      Height="50">
                 <Grid Background="White"
                       Margin="0,0,0,0">
-                    <Button x:Name="button"
-                            Content="Button"
-                            HorizontalAlignment="Left"
-                            Margin="206,93,0,0"
-                            VerticalAlignment="Top"
-                            Width="75" />
 
                 </Grid>
             </TabItem>
