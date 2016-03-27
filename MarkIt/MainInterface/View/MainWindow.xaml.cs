@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-
+using System.Windows.Media.Imaging;
 
 namespace MarkIt
 {
@@ -14,12 +14,17 @@ namespace MarkIt
         {
             InitializeComponent();
 
-            LoginAndSignUpWindow login = new LoginAndSignUpWindow();
-            login.ShowDialog();
-            if (login.DialogResult != Convert.ToBoolean(1))
-            {
-                this.Close();
-            }
+            Uri iconUri = new Uri("pack://application:,,,/Resources/logo.ico", UriKind.RelativeOrAbsolute);
+            this.Icon = BitmapFrame.Create(iconUri);
+
+            //LoginAndSignUpWindow login = new LoginAndSignUpWindow();
+            //login.ShowDialog();
+            //if (login.DialogResult != Convert.ToBoolean(1))
+            //{
+            //    this.Close();
+            //}
+
+
 
         }
 
