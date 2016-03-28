@@ -155,6 +155,7 @@ csx/
 
 # Windows Store app package directory
 AppPackages/
+Thumbs.db
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
