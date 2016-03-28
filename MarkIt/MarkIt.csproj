@@ -129,6 +129,7 @@
     <Folder Include="MainInterface\ViewModel\" />
     <Folder Include="SignInAndSignUp\Model\" />
     <Folder Include="SignInAndSignUp\ViewModel\" />
+    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
