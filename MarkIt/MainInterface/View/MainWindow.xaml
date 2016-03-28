@@ -9,6 +9,7 @@
         Title="主界面"
         Height="350"
         Width="500">
+
     <Button x:Name="button"
             Content="Button"
             HorizontalAlignment="Left"
