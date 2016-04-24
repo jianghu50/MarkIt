@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">MarkIt</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Test User by kasper 16.4.21-->
+    <string-array name="bmob_user_list">
+        <item>1. 注册用户</item>
+        <item>2. 登陆用户</item>
+        <item>3. 获取本地用户</item>
+        <item>4. 退出登陆</item>
+        <item>5. 更新用户</item>
+        <item>6. 验证密码</item>
+        <item>7. 邮箱重置旧密码</item>
+        <item>8. 验证邮件</item>
+        <item>9. 查询用户</item>
+        <item>10.通过邮箱和密码登陆</item>
+        <item>11.修改当前用户密码</item>
+    </string-array>
 </resources>

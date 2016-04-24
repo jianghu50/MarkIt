@@ -4,12 +4,16 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    //**bmob-sdk:3.4.6版本依赖包，用于兼容Android6.0系统 -- Kasper 16.4.21**
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         applicationId "cn.edu.scnu.markit"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -17,12 +21,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    /* bmob里面提供的，不随错误而强制终止程序   -- Kasper 16.4.21 */
+//    lintOptions{
+//        abortOnError false
+//    }
+
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    provided fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile ('com.android.support:appcompat-v7:23.1.1'){
+        exclude module: 'support-v4'
+    }
     compile 'com.android.support:design:23.1.1'
-    compile files('libs/BmobSDK_V3.4.5_1111.jar')
+    /* 按bmob官网上的要求添加   -- Kasper 16.4.21 */
+    compile 'cn.bmob.android:bmob-sdk:3.4.6'
+    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.okio:okio:1.4.0'
+    compile 'com.android.support:support-v4:23.2.1'
 }
