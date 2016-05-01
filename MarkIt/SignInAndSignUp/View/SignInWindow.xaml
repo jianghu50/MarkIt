@@ -71,7 +71,7 @@
                 FontWeight="Bold"
                 BorderThickness="0"
                 Background="#FF5BCC1A"
-                />
+                Click="signInButton_Click"/>
         <CheckBox x:Name="rememberCheckbox"
                   Content="记住我"
                   HorizontalAlignment="Left"
@@ -89,7 +89,7 @@
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
                 FontWeight="Bold"
-                Click="button1_Click" />
+                Click="signUpButton_Click" />
 
         <Button x:Name="forgetButton"
                 Content="忘记密码"
@@ -100,7 +100,8 @@
                 Background="{x:Null}"
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
-                FontWeight="Bold" />
+                FontWeight="Bold" 
+                Click="forgetButton_Click"/>
 
     </Grid>
 

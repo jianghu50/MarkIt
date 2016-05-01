@@ -24,7 +24,15 @@ namespace MarkIt.SignInAndSignUp.View
             InitializeComponent();
         }
 
+        //返回到登录界面
         private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignInWindow signInWindow = new SignInWindow();
+            signInWindow.Show();
+            this.Close();
+        }
+
+        private void comfirmSignUpButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
