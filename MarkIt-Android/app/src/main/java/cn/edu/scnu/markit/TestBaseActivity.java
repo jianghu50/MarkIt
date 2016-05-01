@@ -18,7 +18,10 @@ public class TestBaseActivity extends Activity {
 	
 	protected ListView mListview;
 	protected BaseAdapter mAdapter;
-	
+
+
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -37,6 +40,7 @@ public class TestBaseActivity extends Activity {
 			if (mToast == null) {
 				mToast = Toast.makeText(getApplicationContext(), text,
 						Toast.LENGTH_SHORT);
+
 			} else {
 				mToast.setText(text);
 			}

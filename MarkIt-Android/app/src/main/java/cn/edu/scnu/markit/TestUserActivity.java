@@ -1,16 +1,17 @@
 package cn.edu.scnu.markit;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
+
+import java.util.List;
+
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -21,6 +22,7 @@ import cn.bmob.v3.listener.ResetPasswordByEmailListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.edu.scnu.markit.javabean.User;
+import cn.edu.scnu.markit.ui.LoginActivity;
 
 /**
  * Created by Kasper on 2016/4/21.
@@ -135,6 +137,8 @@ public class TestUserActivity extends TestBaseActivity {
      * 一般创建一个父类对象来实现登录
      */
     private void testLogin() {
+
+
         final BmobUser bu2 = new BmobUser();
         bu2.setUsername(my_email);
         bu2.setPassword(my_password);
@@ -153,6 +157,9 @@ public class TestUserActivity extends TestBaseActivity {
                 toast("登陆失败:" + code + "," + msg);
             }
         });
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     /**
