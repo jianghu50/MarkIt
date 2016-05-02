@@ -50,6 +50,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bmob-Windows">
+      <HintPath>C:\Users\Kasper\Desktop\软件案例\C#-SDK\target\Windows\Bmob-Windows.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -70,9 +73,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SignInAndSignUp\Model\TestUserObject.cs" />
     <Compile Include="SignInAndSignUp\View\SignUpWindow.xaml.cs">
       <DependentUpon>SignUpWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SignInAndSignUp\View\TestUserData.xaml.cs">
+      <DependentUpon>TestUserData.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Util\Service.cs" />
     <Page Include="SignInAndSignUp\View\SignInWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +101,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="SignInAndSignUp\View\SignUpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SignInAndSignUp\View\TestUserData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -127,9 +139,7 @@
   <ItemGroup>
     <Folder Include="MainInterface\Model\" />
     <Folder Include="MainInterface\ViewModel\" />
-    <Folder Include="SignInAndSignUp\Model\" />
     <Folder Include="SignInAndSignUp\ViewModel\" />
-    <Folder Include="Util\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

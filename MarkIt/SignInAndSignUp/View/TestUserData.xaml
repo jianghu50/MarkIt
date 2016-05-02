@@ -4,9 +4,9 @@
         Title="TestUserData" Height="424.675" Width="324.675">
     <Grid>
         <Button Name="btn1" Content="注册(初始密码为123456)" HorizontalAlignment="Left" Margin="43,0,0,336" VerticalAlignment="Bottom" Width="232" Height="37" Click="btn1_Click"/>
-        <Button Name="btn2" Content="登录(固定登录密码为123456)" HorizontalAlignment="Left" Margin="43,84,0,0" VerticalAlignment="Top" Width="232" Height="39"/>
-        <Button Name="btn3" Content="修改密码(修改为1234567)" HorizontalAlignment="Left" Margin="43,152,0,0" VerticalAlignment="Top" Width="232" Height="44"/>
-        <Button Name="btn4" Content="退出登录" HorizontalAlignment="Left" Margin="43,224,0,0" VerticalAlignment="Top" Width="232" Height="42"/>
-        <Button Name="btn5" Content="改回密码为123456后登录才会成功" HorizontalAlignment="Left" Margin="43,317,0,0" Width="232" Height="42" VerticalAlignment="Top"/>
+        <Button Name="btn2" Content="登录(登录密码为123456,建议直接登录)" HorizontalAlignment="Left" Margin="43,84,0,0" VerticalAlignment="Top" Width="232" Height="39" Click="btn2_Click"/>
+        <Button Name="btn3" Content="修改密码(邮箱修改为1234567比较方便)" HorizontalAlignment="Left" Margin="43,152,0,0" VerticalAlignment="Top" Width="232" Height="44" Click="btn3_Click"/>
+        <Button Name="btn4" Content="退出登录" HorizontalAlignment="Left" Margin="43,224,0,0" VerticalAlignment="Top" Width="232" Height="42" Click="btn4_Click"/>
+        <Button Name="btn5" Content="点我验证邮箱" HorizontalAlignment="Left" Margin="43,317,0,0" Width="232" Height="42" VerticalAlignment="Top" Click="btn5_Click"/>
     </Grid>
 </Window>
