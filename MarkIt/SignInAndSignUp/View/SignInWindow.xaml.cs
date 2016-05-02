@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MarkIt.SignInAndSignUp.View;
+using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -21,7 +22,20 @@ namespace MarkIt
             this.Close();
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
+        private void signInButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        
+        //跳转到注册界面
+        private void signUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            SignUpWindow signUpWindow = new SignUpWindow();
+            signUpWindow.Show();
+            this.Close();
+        }
+
+        private void forgetButton_Click(object sender, RoutedEventArgs e)
         {
 
         }
