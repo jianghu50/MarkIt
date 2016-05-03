@@ -31,7 +31,7 @@ namespace MarkIt.SignInAndSignUp.View
     public partial class TestUserData : Window
     {
         //这里用我自己的号
-        private string userName = "909392891@qq.com";
+        private string userName = "73124589@qq.com";
         private string passWord = "123456";
         private string testInfo = "测试信息：";
         private Service service = Service.Instance;

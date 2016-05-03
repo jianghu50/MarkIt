@@ -29,11 +29,11 @@ namespace MarkIt
             service.Bmob.initialize("99a6b5c065255271a22d63836764b33b", "f805552192fbb9e448e734f4af1e5070");
 
             //在这里打开窗体。
-            //SignInWindow window = new SignInWindow();
-            //window.Show();
-
-            TestUserData window = new TestUserData();
+            SignInWindow window = new SignInWindow();
             window.Show();
+
+          //  TestUserData window = new TestUserData();
+          //  window.Show();
         }
 
 
