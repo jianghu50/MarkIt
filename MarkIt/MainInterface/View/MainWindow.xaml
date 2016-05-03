@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:MarkIt"
         mc:Ignorable="d"
         Title="MarkIt"
-        Height="350"
-        Width="500">
+        Height="500"
+        Width="800">
     <Menu>
         <MenuItem Header="文件">
             <MenuItem Header="新建(_N)" InputGestureText="Ctrl+N" />
