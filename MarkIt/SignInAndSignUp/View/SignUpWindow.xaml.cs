@@ -10,19 +10,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MarkIt
+namespace MarkIt.SignInAndSignUp.View
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// SignUpWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SignUpWindow : Window
     {
-        public MainWindow()
+        public SignUpWindow()
         {
             InitializeComponent();
+        }
+
+        private void backButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
