@@ -7,4 +7,11 @@
     <!-- Test User by Kasper 16.4.21-->
     <color name="button">#FFFFFF</color>
     <color name="button_press">#F1F1F1</color>
+    
+    
+    <color name="lightGreen">#7cb342</color>
+    <color name="white">#ffffff</color>
+    <color name="view_gray">#bbbbbb</color>
+    <color name="text_gray">#999b9e</color>
+    
 </resources>
