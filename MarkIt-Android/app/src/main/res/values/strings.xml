@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">MarkIt</string>
     <string name="action_settings">Settings</string>
+    <string name="login">登 录</string>
+    <string name="register">注册</string>
+    <string name="email">邮箱</string>
+    <string name="password">密码</string>
+    <string name="rememberMe">记住我</string>
+    <string name="forgetPassword">忘记密码</string>
+    <string name="ensurePassword">确认密码</string>
+    <string name="newPassword">新密码</string>
+    <string name="ensure">确定</string>
+
+    <string name="net_available">网络已连接</string>
+    <string name="net_unAvailable">网络未连接</string>
+
+    <string name="username_null">请输入邮箱</string>
+    <string name="password_null">请输入密码</string>
+    <string name="newPassword_null">请输入新密码</string>
+    <string name="ensurePassword_null">请输入确认密码</string>
+    <string name="password_different">密码输入不一致</string>
 
     <!-- Test User by kasper 16.4.21-->
     <string-array name="bmob_user_list">

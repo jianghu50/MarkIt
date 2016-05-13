@@ -16,9 +16,26 @@ public class MarkItApplication extends Application{
      */
     public static String APPID = "99a6b5c065255271a22d63836764b33b";
 
+   /* public static final String IS_LOGIN_SUCCESS = "isLoginSuccess";
+
+    public SharedPreferences sharedPreferences = null;
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
+
+    public void setSharedPreferences(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+    }
+*/
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+
+
         //设置BmobConfig
         BmobConfig config =new BmobConfig.Builder()
                 //请求超时时间（单位为秒）：默认15s

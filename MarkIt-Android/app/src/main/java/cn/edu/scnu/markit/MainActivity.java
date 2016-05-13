@@ -6,10 +6,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+
+import cn.edu.scnu.markit.ui.LoginRegisterActivity;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -41,7 +43,10 @@ public class MainActivity extends AppCompatActivity
         userTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, TestUserActivity.class));
+
+                //startActivity(new Intent(MainActivity.this, TestUserActivity.class));
+                Intent intent = new Intent(MainActivity.this, LoginRegisterActivity.class);
+                startActivity(intent);
             }
         });
 
