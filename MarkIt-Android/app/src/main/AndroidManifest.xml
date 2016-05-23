@@ -36,7 +36,7 @@
         </activity>
         -->
         <!-- test user by kasper 16.4.21-->
-        <activity android:name=".TestUserActivity"/>
+        <activity android:name=".test.TestUserActivity"/>
 
 
         <activity

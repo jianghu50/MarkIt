@@ -1,4 +1,4 @@
-package cn.edu.scnu.markit;
+package cn.edu.scnu.markit.test;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -21,7 +21,9 @@ import cn.bmob.v3.listener.LogInListener;
 import cn.bmob.v3.listener.ResetPasswordByEmailListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
+import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.javabean.User;
+import cn.edu.scnu.markit.test.TestBaseActivity;
 import cn.edu.scnu.markit.ui.LoginActivity;
 
 /**
@@ -194,9 +196,9 @@ public class TestUserActivity extends TestBaseActivity {
 
     /**
      * 更新用户操作并同步更新本地的用户信息
-     * @Method update(Context context, UpdateListener listener)
+     * @Method update(Context context, objectID, UpdateListener listener)
      * 注意，@Method updateUser()，这个方法非常重要，用来上传用户信息
-     * 一般在调用@Method update(Context context, UpdateListener listener)时，进行setter操作
+     * 一般在调用@Method update(Context context, objectID, UpdateListener listener)时，进行setter操作
      * 现在由于主要是测试用户注册、登录、改密码之类的用户管理操作
      * 所以没有添加 “联系人列表” 以及对应的“信息列表”，以后是需要再来这里更改的
      * 我注释的句子是例子，示例以后要怎样去添加联系人，请不要随意更改。
