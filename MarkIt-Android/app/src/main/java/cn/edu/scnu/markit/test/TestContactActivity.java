@@ -28,7 +28,7 @@ import cn.edu.scnu.markit.javabean.User;
 
 /**
  * Created by Kasper on 2016/5/22.
- *
+ * 没有测试过，有任何问题请随时联系
  */
 public class TestContactActivity extends TestBaseActivity {
     @Override
@@ -220,18 +220,37 @@ public class TestContactActivity extends TestBaseActivity {
                 toast("上传文件失败：" + msg);
             }
         });
+
+        Contact c = new Contact();
+        c.setObjectId("获取到的ID");
+        final Note note = new Note();
+        note.setContact(c);//添加一对多关系，绑定联系人
+        note.setText(null);//没有文本
+        note.setImage(bmobFile);//添加图片
+        note.save(this, new SaveListener() {
+            @Override
+            public void onSuccess() {
+                //新建成功后的操作...
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
     }
 
     /**
-     *图片下载
+     * 笔记查询和图片下载
+     * 同时包含了查询特定联系人的所有笔记，
      */
     private void testDownloadImg(){
         //第一种方法
         BmobQuery<Note> query = new BmobQuery<Note>();
-        Note note = new Note();
-        note.setObjectId("联系人ID");
+        Contact contact = new Contact();
+        contact.setObjectId("联系人ID");
         //按条件查询，
-        query.addWhereEqualTo("post",new BmobPointer(note));
+        query.addWhereEqualTo("contact",new BmobPointer(contact));
         //按照时间降序,即最近添加的图片最新加载。
         query.order("-createdAt");
         query.findObjects(this, new FindListener<Note>() {
@@ -290,8 +309,11 @@ public class TestContactActivity extends TestBaseActivity {
     //2.分页查询(结合ListView)，本人认为这种方法是最佳方法，但需要android组仔细阅读
     // “分页查询结合ListView源码”，该源码阅读起来不会很难。
     private void testQueryContact(){
+        User myUser = BmobUser.getCurrentUser(this, User.class);
         //查询全部联系人
         BmobQuery<Contact> query = new BmobQuery<Contact>();
+        //按条件查询，特定用户的联系人
+        query.addWhereEqualTo("usert",new BmobPointer(myUser));
         // 按照时间降序,即最近添加的联系人就在最前面
         query.order("-createdAt");
         query.findObjects(this, new FindListener<Contact>() {

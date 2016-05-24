@@ -51,7 +51,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Bmob-Windows">
-      <HintPath>C:\Users\Kasper\Desktop\软件案例\C#-SDK\target\Windows\Bmob-Windows.dll</HintPath>
+      <HintPath>..\..\..\软件案例\C#-SDK\target\Windows\Bmob-Windows.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -73,7 +73,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SignInAndSignUp\Model\TestContactObject.cs" />
+    <Compile Include="SignInAndSignUp\Model\TestNoteObject.cs" />
     <Compile Include="SignInAndSignUp\Model\TestUserObject.cs" />
+    <Compile Include="SignInAndSignUp\ViewModel\TestSprint2.cs" />
     <Compile Include="SignInAndSignUp\View\SignUpWindow.xaml.cs">
       <DependentUpon>SignUpWindow.xaml</DependentUpon>
     </Compile>
@@ -108,6 +111,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -139,7 +146,6 @@
   <ItemGroup>
     <Folder Include="MainInterface\Model\" />
     <Folder Include="MainInterface\ViewModel\" />
-    <Folder Include="SignInAndSignUp\ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
