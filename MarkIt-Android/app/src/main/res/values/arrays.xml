@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="date" >
+        <item>师兄</item>
+        <item>师弟</item>
+        <item>+0</item>
+        <item>强</item>
+        <item>豪哥</item>
+        <item>老板</item>
+    </string-array>
+    <string-array name="text" >
+    <item>你把我灌醉，又不和我睡！</item>
+    <item>你把我灌醉，又不和我睡！你把我灌醉，又不和我睡！</item>
+    <item>你把我灌醉，又不和我睡！你把我灌醉，又不和我睡！你把我灌醉，又不和我睡！</item>
+    <item>强</item>
+    <item>豪哥</item>
+    <item>老板</item>
+</string-array>
+</resources>
