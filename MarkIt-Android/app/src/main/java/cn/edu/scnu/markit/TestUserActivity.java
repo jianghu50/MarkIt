@@ -1,7 +1,6 @@
 package cn.edu.scnu.markit;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,7 +21,6 @@ import cn.bmob.v3.listener.ResetPasswordByEmailListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 import cn.edu.scnu.markit.javabean.User;
-import cn.edu.scnu.markit.ui.LoginActivity;
 
 /**
  * Created by Kasper on 2016/4/21.
@@ -158,8 +156,8 @@ public class TestUserActivity extends TestBaseActivity {
             }
         });
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+       /* Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);*/
     }
 
     /**

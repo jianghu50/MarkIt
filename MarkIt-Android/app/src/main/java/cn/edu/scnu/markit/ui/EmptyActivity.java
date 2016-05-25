@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import cn.edu.scnu.markit.MainActivity;
+import cn.edu.scnu.markit.util.MyDatabaseManager;
 
 /**
  * Created by jialin on 2016/4/28.
@@ -20,10 +21,17 @@ public class EmptyActivity extends Activity {
 
         Intent intent = null;
         if (is_Login){
-           intent = new Intent(this,MainActivity.class);
+            intent = new Intent(this,MainActivity.class);
+            MyDatabaseManager.userId = sharedPreferences.getString("userId",null);
         }else {
             intent = new Intent(this,LoginRegisterActivity.class);
         }
         startActivity(intent);
+        finish();
+
+      /*  Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+*/
     }
 }

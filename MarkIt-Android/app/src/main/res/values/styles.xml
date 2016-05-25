@@ -19,5 +19,11 @@
         <item name="colorControlActivated">@color/button</item>
         <item name="colorControlHighlight">@color/button</item>
     </style>
-
+    
+    <style name="contactDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

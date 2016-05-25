@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import cn.edu.scnu.markit.ui.LoginRegisterActivity;
+import cn.edu.scnu.markit.floatwindow.FloatWindowService;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -44,9 +44,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-                //startActivity(new Intent(MainActivity.this, TestUserActivity.class));
-                Intent intent = new Intent(MainActivity.this, LoginRegisterActivity.class);
-                startActivity(intent);
+//                //startActivity(new Intent(MainActivity.this, TestUserActivity.class));
+//               startActivity(intent);
+
+               Intent intent = new Intent(MainActivity.this,FloatWindowService.class);
+               startService(intent);
+                String[] data = {"林俊杰","王力宏","罗志祥","刘德华","李连杰","成龙","李宇春","张杰","汪峰",
+                                    "王菲","章子怡","刘亦菲","苏有朋","古天乐","谢霆锋"};
+
+               finish();
             }
         });
 

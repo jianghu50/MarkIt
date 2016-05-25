@@ -109,7 +109,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener{
                         + "-" + myUser.getSessionToken() + ",是否验证：" + myUser.getEmailVerified());
                 //接下来应该进行验证邮箱或者其他UI跳转
                 Intent intent = new Intent(getContext(), MainActivity.class);
-                getActivity().finish();
+                //getActivity().finish();
             }
 
             @Override
