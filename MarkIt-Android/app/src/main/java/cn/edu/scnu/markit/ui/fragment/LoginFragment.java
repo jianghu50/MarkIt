@@ -22,6 +22,7 @@ import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.javabean.User;
 import cn.edu.scnu.markit.ui.ForgetPasswordActivity;
 import cn.edu.scnu.markit.util.CommonUtils;
+import cn.edu.scnu.markit.util.MyDatabaseManager;
 
 /**
  * Created by jialin on 2016/4/29.
@@ -90,7 +91,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void login() {
         String email = mEmail.getText().toString();
-        String password = mPassword.getText().toString();
+        final String password = mPassword.getText().toString();
 
         if (TextUtils.isEmpty(email)){
             showToast(R.string.username_null);
@@ -124,10 +125,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     SharedPreferences sharedPreferences;
                     sharedPreferences = getActivity().getSharedPreferences("isLoginSuccess",0);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean("loginSucceed",false);
+                    editor.putBoolean("loginSucceed",true);
+                    editor.putString("userId",bu2.getObjectId());
                     editor.commit();
                 }
 
+                //添加用户到用户表
+                MyDatabaseManager.insertUser(bu2.getObjectId(),bu2.getUsername(),password);
 
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
