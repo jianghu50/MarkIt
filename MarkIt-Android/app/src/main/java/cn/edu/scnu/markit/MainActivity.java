@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         List<Record> records = getRecordData();
         recordAdapter = new RecordAdapter(this,records);
         main_list.setAdapter(recordAdapter);
- 
+
         setSupportActionBar(main_toolbar);
         main_toolbar.setTitle("MarkIt");
         main_toolbar.setTitleTextColor(getResources().getColor(R.color.white));
