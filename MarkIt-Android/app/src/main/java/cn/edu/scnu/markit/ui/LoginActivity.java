@@ -47,7 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
         mEmail = (EditText)findViewById(R.id.login_email_edit);
         mPassword = (EditText)findViewById(R.id.login_password_edit);
-        mCheckBox = (CheckBox)findViewById(R.id.login_checkBox);
+        mCheckBox = (CheckBox)findViewById(R.id.checkBox);
 
         mLogin = (Button)findViewById(R.id.login_down);
         mLogin.setOnClickListener(this);

@@ -44,12 +44,6 @@
                  FontWeight="Bold"
                  FontSize="18"
                  BorderBrush="{x:Null}" />
-        <Label x:Name="emailMessage"
-               Margin="30,160,250,300"
-               Background="{x:Null}"
-               Foreground="White"
-               FontWeight="Bold"
-               FontSize="10"/>
         <Label x:Name="passwordLabel"
                Content="密码"
                Margin="30,180,310,315"
@@ -64,19 +58,6 @@
                      Width="320"
                      Height="30"
                      FontSize="18" />
-        <Label x:Name="passwordMessage"
-               Margin="30,240,240,250"
-               Background="{x:Null}"
-               Foreground="White"
-               FontWeight="Bold"
-               FontSize="10" />
-        <CheckBox x:Name="rememberCheckbox"
-                  Content="记住我"
-                  HorizontalAlignment="Left"
-                  Margin="30,285,0,0"
-                  VerticalAlignment="Top"
-                  Foreground="White"
-                  FontWeight="Bold" />
         <Button x:Name="signInButton"
                 Content="登录"
                 HorizontalAlignment="Center"
@@ -90,7 +71,26 @@
                 FontWeight="Bold"
                 BorderThickness="0"
                 Background="#FF5BCC1A"
-                Click="signInButton_Click"/>
+                />
+        <CheckBox x:Name="rememberCheckbox"
+                  Content="记住我"
+                  HorizontalAlignment="Left"
+                  Margin="30,275,0,0"
+                  VerticalAlignment="Top"
+                  Foreground="White"
+                  FontWeight="Bold" />
+        <Button x:Name="signUpButton"
+                Content="注册"
+                HorizontalAlignment="Left"
+                Margin="315,381,0,0"
+                VerticalAlignment="Top"
+                Width="35"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}"
+                Foreground="#FF159BE8"
+                FontWeight="Bold"
+                Click="button1_Click" />
+
         <Button x:Name="forgetButton"
                 Content="忘记密码"
                 HorizontalAlignment="Left"
@@ -100,32 +100,7 @@
                 Background="{x:Null}"
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
-                FontWeight="Bold" 
-                Click="forgetButton_Click"/>
-        <Button x:Name="changeButton"
-                Content="修改密码"
-                HorizontalAlignment="Left"
-                Margin="290,381,0,0"
-                VerticalAlignment="Top"
-                Width="56"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}"
-                Foreground="#FF159BE8"
-                FontWeight="Bold" 
-                Click="changeButton_Click"/>
-        <Button x:Name="signUpButton"
-                Content="注册"
-                HorizontalAlignment="Left"
-                Margin="170,381,0,0"
-                VerticalAlignment="Top"
-                Width="35"
-                Background="{x:Null}"
-                BorderBrush="{x:Null}"
-                Foreground="#FF159BE8"
-                FontWeight="Bold"
-                Click="signUpButton_Click" />
-
-        
+                FontWeight="Bold" />
 
     </Grid>
 
