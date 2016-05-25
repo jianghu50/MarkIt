@@ -6,15 +6,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkIt"
         mc:Ignorable="d"
-        Title="主界面"
-        Height="350"
-        Width="500">
-
-    <Button x:Name="button"
-            Content="Button"
-            HorizontalAlignment="Left"
-            Margin="215,150,0,0"
-            VerticalAlignment="Top"
-            Width="75" />
-
+        Title="MarkIt"
+        Height="500"
+        Width="800">
+    <Menu>
+        <MenuItem Header="文件">
+            <MenuItem Header="新建(_N)" InputGestureText="Ctrl+N" />
+            <MenuItem Header="打开(_O)" InputGestureText="Ctrl+O" />
+            <Separator />
+            <MenuItem Header="保存(_S)" InputGestureText="Ctrl+S" />
+            <MenuItem Header="另存为" />
+            <Separator />
+            <MenuItem Header="退出(_X)" />
+        </MenuItem>
+        <MenuItem Header="编辑(_E)">
+            <MenuItem Header="创建新联系人" />
+            <MenuItem Command="Copy" />
+            <MenuItem Command="Cut" />
+            <MenuItem Command="Paste"/>
+        </MenuItem>
+        <MenuItem Header="帮助">
+            <MenuItem Header="操作帮助..." />
+            <MenuItem Header="关于..." />
+        </MenuItem>
+        <MenuItem Header="同步">
+        </MenuItem>
+    </Menu>
 </Window>
