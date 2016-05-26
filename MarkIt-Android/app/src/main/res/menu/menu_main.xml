@@ -4,7 +4,8 @@
       tools:context=".MainActivity">
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/settings1"
         android:title="@string/action_settings"
         android:orderInCategory="100"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 </menu>
