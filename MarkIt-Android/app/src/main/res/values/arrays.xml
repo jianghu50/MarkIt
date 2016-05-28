@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="date" >
+        <item>师兄</item>
+        <item>师弟</item>
+        <item>林佳霖</item>
+        <item>强</item>
+        <item>豪哥</item>
+        <item>老板</item>
+    </string-array>
+    <string-array name="text" >
+    <item>下个星期。。。。。</item>
+    <item>啊啊啊啊啊是东风公司的风格让位破人未速度快将发挥速度</item>
+    <item>Android studio</item>
+    <item>强哥是强哥</item>
+    <item>豪哥</item>
+    <item>老板是老板</item>
+</string-array>
+</resources>
