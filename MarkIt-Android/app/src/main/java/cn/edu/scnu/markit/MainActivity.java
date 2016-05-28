@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,9 @@ import cn.edu.scnu.markit.javabean.Record;
 import cn.edu.scnu.markit.javabean.SortModel;
 import cn.edu.scnu.markit.ui.LoginRegisterActivity;
 import cn.edu.scnu.markit.ui.view.SideBar;
+
+import cn.edu.scnu.markit.floatwindow.FloatWindowService;
+
 
 public class MainActivity extends AppCompatActivity
 {
@@ -166,11 +170,23 @@ public class MainActivity extends AppCompatActivity
         sortListView = (ListView) findViewById(R.id.listView);
         sortListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+<<<<<<< HEAD
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //这里要利用adapter.getItem(position)来获取当前position所对应的对象
                 Toast.makeText(getApplication(), ((SortModel)sortAdapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
+=======
+//                //startActivity(new Intent(MainActivity.this, TestUserActivity.class));
+//               startActivity(intent);
+
+               Intent intent = new Intent(MainActivity.this,FloatWindowService.class);
+               startService(intent);
+                String[] data = {"林俊杰","王力宏","罗志祥","刘德华","李连杰","成龙","李宇春","张杰","汪峰",
+                                    "王菲","章子怡","刘亦菲","苏有朋","古天乐","谢霆锋"};
+
+               finish();
+>>>>>>> upstream/develop
             }
         });
 

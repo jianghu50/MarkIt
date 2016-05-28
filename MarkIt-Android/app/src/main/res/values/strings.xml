@@ -23,6 +23,16 @@
     <string name="ensurePassword_null">请输入确认密码</string>
     <string name="password_different">密码输入不一致</string>
 
+    <string name="hint_input_content">请输入内容...</string>
+    <string name="contacts">联系人</string>
+    <string name="add">添加</string>
+    <string name="cancel">取消</string>
+    <string name="select_contact">请选择联系人</string>
+
+    <string name="add_icon">"+"</string>
+
+    <string name="pleaseInputNewContact">请输入新增联系人姓名</string>
+    
     <!-- Test User by kasper 16.4.21-->
     <string-array name="bmob_user_list">
         <item>1. 注册用户</item>
