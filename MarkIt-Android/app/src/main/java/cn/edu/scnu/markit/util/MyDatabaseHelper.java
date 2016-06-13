@@ -29,6 +29,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
      */
     public static final String CREATE_NOTES_TABLE = "create table Notes ("
             + "id integer primary key autoincrement, "
+            + "contactId integer, "
             + "contactName text, "
             + "note text, "
             + "image text, "

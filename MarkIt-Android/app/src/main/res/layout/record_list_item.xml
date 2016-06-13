@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <android.support.v7.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -6,10 +7,11 @@
     android:layout_height="wrap_content"
     card_view:cardBackgroundColor="@color/transparent_white"
     android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="8dp">
-
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -38,7 +40,9 @@
         android:id="@+id/Record_text"
         android:layout_below="@+id/Record_name"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:singleLine="true"
+        android:ellipsize="end"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -47,9 +51,9 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="11:39:47"
-        android:id="@+id/textView"
+        android:id="@+id/Record_time"
         android:layout_below="@+id/Record_text"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
-    </android.support.v7.widget.CardView>
+   <!-- </android.support.v7.widget.CardView> -->
