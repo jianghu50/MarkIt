@@ -32,7 +32,11 @@
     <string name="add_icon">"+"</string>
 
     <string name="pleaseInputNewContact">请输入新增联系人姓名</string>
-    
+
+    <string name="string_add_note">添加笔记</string>
+    <string name="string_save_note">保存笔记</string>
+
+
     <!-- Test User by kasper 16.4.21-->
     <string-array name="bmob_user_list">
         <item>1. 注册用户</item>

@@ -8,7 +8,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_setting"
-        android:icon="@drawable/settings"
+        android:icon="@drawable/settings1"
         android:title="menu_settings"
         app:showAsAction="ifRoom" />
 </menu>
