@@ -13,6 +13,8 @@ public class Note extends BmobObject {
 
     private Contact contact;//一对多关系，对应的联系人
 
+    private Boolean isDelete;//是否删除
+
     public String getText() {
         return text;
     }
@@ -35,5 +37,13 @@ public class Note extends BmobObject {
 
     public void setImage(BmobFile image) {
         this.image = image;
+    }
+
+    public Boolean getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Boolean isDelete) {
+        this.isDelete = isDelete;
     }
 }

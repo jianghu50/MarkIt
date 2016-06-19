@@ -16,4 +16,11 @@
         android:listSelector="@drawable/test_user_selector_list_item" >
     </ListView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/contact_info"
+        android:layout_below="@+id/contact_listview"
+        />
+
 </RelativeLayout>

@@ -12,6 +12,8 @@ public class Contact extends BmobObject {
 
     private User user;//对应的用户
 
+    private Boolean isDelete;//是否删除
+
     public String getContactName() {
         return contactName;
     }
@@ -26,5 +28,13 @@ public class Contact extends BmobObject {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Boolean getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Boolean isDelete) {
+        this.isDelete = isDelete;
     }
 }
