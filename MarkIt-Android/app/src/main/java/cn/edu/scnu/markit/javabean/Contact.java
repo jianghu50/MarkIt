@@ -14,6 +14,7 @@ public class Contact extends BmobObject {
 
     private Boolean isDelete;//是否删除
 
+
     public String getContactName() {
         return contactName;
     }
@@ -37,4 +38,5 @@ public class Contact extends BmobObject {
     public void setIsDelete(Boolean isDelete) {
         this.isDelete = isDelete;
     }
+
 }

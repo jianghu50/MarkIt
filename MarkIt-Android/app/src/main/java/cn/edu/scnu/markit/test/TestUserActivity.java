@@ -1,7 +1,6 @@
 package cn.edu.scnu.markit.test;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +24,7 @@ import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.javabean.User;
 import cn.edu.scnu.markit.test.TestBaseActivity;
 import cn.edu.scnu.markit.ui.LoginActivity;
+
 
 /**
  * Created by Kasper on 2016/4/21.
@@ -160,8 +160,8 @@ public class TestUserActivity extends TestBaseActivity {
             }
         });
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+       /* Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);*/
     }
 
     /**

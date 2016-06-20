@@ -16,6 +16,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!--悬浮窗创建权限-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.GET_TASKS"/>
+
     <application
         android:name=".MarkItApplication"
         android:allowBackup="true"
@@ -54,8 +58,13 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             />
+
+
         <activity android:name=".ui.LoginRegisterActivity"/>
         <activity android:name=".ui.ForgetPasswordActivity"/>
+        <activity android:name=".ui.ContactNotesActivity"/>
+
+        <service android:name=".floatwindow.FloatWindowService"/>
 
     </application>
 
