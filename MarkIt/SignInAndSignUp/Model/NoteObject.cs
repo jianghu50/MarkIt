@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MarkIt.SignInAndSignUp.Model
 {
-    class TestNoteObject:BmobTable
+    class NoteObject:BmobTable
     {
         //对应的数据表 笔记对应的数据表名为：“Note”
         private String fTable;
@@ -16,13 +16,16 @@ namespace MarkIt.SignInAndSignUp.Model
 
         public BmobFile image { get; set; }
 
-        public BmobPointer<TestContactObject> contact { get; set; }
+        public BmobPointer<ContactObject> contact { get; set; }
+
+        //软删除，删除时标记为true
+        public BmobBoolean isDelete { get; set; }
 
         //构造函数
-        public TestNoteObject() { }
+        public NoteObject() { }
 
         //构造函数
-        public TestNoteObject(String tableName)
+        public NoteObject(String tableName)
         {
             this.fTable = tableName;
         }
@@ -45,7 +48,8 @@ namespace MarkIt.SignInAndSignUp.Model
 
             this.text = input.getString("text");
             this.image = input.Get<BmobFile>("image");
-            this.contact = input.Get<BmobPointer<TestContactObject>>("contact");
+            this.contact = input.Get<BmobPointer<ContactObject>>("contact");
+            this.isDelete = input.getBoolean("isDelete");
         }
 
         public override void write(BmobOutput output, Boolean all)
@@ -55,6 +59,7 @@ namespace MarkIt.SignInAndSignUp.Model
             output.Put("text", this.text);
             output.Put("image", this.image);
             output.Put("contact", this.contact);
+            output.Put("isDelete", this.isDelete);
         }
 
     }
