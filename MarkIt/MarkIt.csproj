@@ -73,9 +73,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+<<<<<<< HEAD
     <Compile Include="MainInterface\Model\TestContactObject.cs" />
     <Compile Include="MainInterface\Model\TestNoteObject.cs" />
     <Compile Include="SignInAndSignUp\Model\TestUserObject.cs" />
+=======
+    <Compile Include="SignInAndSignUp\Model\ContactObject.cs" />
+    <Compile Include="SignInAndSignUp\Model\NoteObject.cs" />
+    <Compile Include="SignInAndSignUp\Model\UserObject.cs" />
+>>>>>>> f7d32f5a16493e5751e51ec0055c6cd146361320
     <Compile Include="SignInAndSignUp\ViewModel\TestSprint2.cs" />
     <Compile Include="SignInAndSignUp\View\SignUpWindow.xaml.cs">
       <DependentUpon>SignUpWindow.xaml</DependentUpon>

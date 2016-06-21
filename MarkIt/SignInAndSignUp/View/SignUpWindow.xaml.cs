@@ -38,14 +38,14 @@ namespace MarkIt.SignInAndSignUp.View
             else
             {
                 //注册用户
-                TestUserObject user = new TestUserObject();
+                UserObject user = new UserObject();
 
                 user.username = signUpEmailTextBox.Text;
                 user.password = signUpPasswordBox.Password;
                 user.email = signUpEmailTextBox.Text;
 
                 //判断邮箱是否可用
-                var future = service.Bmob.CreateTaskAsync<TestUserObject>(user);
+                var future = service.Bmob.CreateTaskAsync<UserObject>(user);
                 try
                 {
                     string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
