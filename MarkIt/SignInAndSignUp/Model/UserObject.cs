@@ -8,9 +8,9 @@ using cn.bmob.io;
 
 namespace MarkIt.SignInAndSignUp.Model
 {
-    class TestUserObject: BmobUser
+    class UserObject: BmobUser
     {
         //构造函数
-        public TestUserObject() { }
+        public UserObject() { }
     }
 }

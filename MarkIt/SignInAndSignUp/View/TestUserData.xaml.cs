@@ -50,7 +50,7 @@ namespace MarkIt.SignInAndSignUp.View
         private void btn1_Click(object sender, RoutedEventArgs e)
         {
             //注册用户
-            TestUserObject user = new TestUserObject();
+            UserObject user = new UserObject();
             //示例
             //user.username = username.Text;
             //user.password = password.Text;
@@ -62,7 +62,7 @@ namespace MarkIt.SignInAndSignUp.View
             user.password = passWord;
             //输出测试信息
             Console.WriteLine(testInfo);
-            var future = service.Bmob.CreateTaskAsync<TestUserObject>(user);
+            var future = service.Bmob.CreateTaskAsync<UserObject>(user);
             try
             {
                 string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);

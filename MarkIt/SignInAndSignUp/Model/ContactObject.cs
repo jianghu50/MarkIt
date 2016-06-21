@@ -7,19 +7,21 @@ using System.Threading.Tasks;
 
 namespace MarkIt.SignInAndSignUp.Model
 {
-    class TestContactObject:BmobTable
+    class ContactObject:BmobTable
     {
         //对应的数据表 联系人对应的数据表名为：“Contact”
         private String fTable;
 
         public string contactName { get; set; }
         public BmobPointer<BmobUser> user { get; set; }
+        //软删除，删除时标记为true
+        public BmobBoolean isDelete { get; set; }
 
         //构造函数
-        public TestContactObject() { }
+        public ContactObject() { }
 
-        //构造函数
-        public TestContactObject(String tableName)
+        //构造函数,参数为云端上对接的数据表“Contact”
+        public ContactObject(String tableName)
         {
             this.fTable = tableName;
         }
@@ -42,6 +44,7 @@ namespace MarkIt.SignInAndSignUp.Model
             //读取属性值
             this.contactName = input.getString("contactName");
             this.user = input.Get<BmobPointer<BmobUser>>("user");
+            this.isDelete = input.getBoolean("isDelete");
         }
 
         public override void write(BmobOutput output, bool all)
@@ -50,6 +53,7 @@ namespace MarkIt.SignInAndSignUp.Model
             //写到发送端
             output.Put("contactName", this.contactName);
             output.Put("user", this.user);
+            output.Put("isDelete", this.isDelete);
         }
     }
 }
