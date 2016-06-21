@@ -50,14 +50,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Reference Include="Bmob-Windows, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\Bmob-Windows.dll</HintPath>
-=======
     <Reference Include="Bmob-Windows">
       <HintPath>..\..\..\软件案例\C#-SDK\target\Windows\Bmob-Windows.dll</HintPath>
->>>>>>> b92a3df58872d428bf7c76483bddfa30a2f8c144
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -79,8 +73,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SignInAndSignUp\Model\TestContactObject.cs" />
-    <Compile Include="SignInAndSignUp\Model\TestNoteObject.cs" />
+    <Compile Include="MainInterface\Model\TestContactObject.cs" />
+    <Compile Include="MainInterface\Model\TestNoteObject.cs" />
     <Compile Include="SignInAndSignUp\Model\TestUserObject.cs" />
     <Compile Include="SignInAndSignUp\ViewModel\TestSprint2.cs" />
     <Compile Include="SignInAndSignUp\View\SignUpWindow.xaml.cs">
@@ -150,7 +144,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MainInterface\Model\" />
     <Folder Include="MainInterface\ViewModel\" />
   </ItemGroup>
   <ItemGroup>

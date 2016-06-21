@@ -11,6 +11,8 @@ namespace MarkIt.SignInAndSignUp.Model
     class TestUserObject: BmobUser
     {
         //构造函数
-        public TestUserObject() { }
+        public TestUserObject()
+        {
+        }
     }
 }
