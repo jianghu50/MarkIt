@@ -8,7 +8,7 @@ using cn.bmob.json;
 
 namespace MarkIt
 {
-    public partial class SignInWindow : Window
+    public partial class SignInWindow: Window
     {
         private Service service = Service.Instance;
 
@@ -30,36 +30,31 @@ namespace MarkIt
         //登录按钮，成功则跳转到这界面
         private void signInButton_Click(object sender, RoutedEventArgs e)
         {
-            if (emailTextbox.Text == "") { emailMessage.Content = "邮箱为空"; }
-            else if (passwordBox.Password == "") { passwordMessage.Content = "密码为空"; }
-            else
-            {
+            if(emailTextbox.Text == "") {
+                emailMessage.Content = "邮箱为空";
+            } else if(passwordBox.Password == "") {
+                passwordMessage.Content = "密码为空";
+            } else {
                 var future = service.Bmob.LoginTaskAsync<BmobUser>(emailTextbox.Text, passwordBox.Password);
-                try
-                {
+                try {
                     string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
                     //判断该账号是否验证
-                    if ("True" == BmobUser.CurrentUser.emailVerified.ToString())
-                    {
+                    if("True" == BmobUser.CurrentUser.emailVerified.ToString()) {
                         //让用户进入主程序
                         MainWindow mainWindow = new MainWindow();
                         mainWindow.Show();
                         this.Close();
-                    }
-                    else
-                    {
+                    } else {
                         //继续停留在登录界面，待用户验证后再点击登录
                         emailMessage.Content = "账号未验证";
                     }
-                }
-                catch
-                {
+                } catch {
                     passwordMessage.Content = "账号或密码错误";
 
                 }
             }
         }
-        
+
         //跳转到注册界面
         private void signUpButton_Click(object sender, RoutedEventArgs e)
         {
@@ -70,21 +65,15 @@ namespace MarkIt
 
         private void forgetButton_Click(object sender, RoutedEventArgs e)
         {
-            if (emailTextbox.Text != "")
-            {
+            if(emailTextbox.Text != "") {
                 var future = service.Bmob.ResetTaskAsync(emailTextbox.Text);
-                try
-                {
+                try {
                     string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
                     passwordMessage.Content = "已发送邮件";
-                }
-                catch
-                {
+                } catch {
                     emailMessage.Content = "邮箱错误";
                 }
-            }
-            else
-            {
+            } else {
                 emailMessage.Content = "邮箱为空";
             }
         }

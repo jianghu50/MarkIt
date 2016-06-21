@@ -36,6 +36,6 @@
         <ListBox Name="listBox" 
                  Margin="0,20,550,0"
                  FontSize="20"
-                 ></ListBox>
+                 SelectionChanged="listBox_SelectionChanged"></ListBox>
     </Grid>
 </Window>
