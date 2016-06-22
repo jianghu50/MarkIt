@@ -5,7 +5,7 @@ using System;
 using System.Windows;
 
 
-namespace MarkIt.SignInAndSignUp.View
+namespace MarkIt.SignInAndSignUp
 {
     /// <summary>
     /// SignUpWindow.xaml 的交互逻辑

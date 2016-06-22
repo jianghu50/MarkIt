@@ -1,48 +1,38 @@
 ﻿using cn.bmob.io;
+using cn.bmob.json;
 using MarkIt.SignInAndSignUp.Model;
 using MarkIt.Util;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
-namespace MarkIt.SignInAndSignUp.ViewModel
+namespace MarkIt.MainInterface
 {
-    class TestSprint2
+    class MainWindowViewModel
     {
-        //对应要操作的联系人表
-        public const String CONTACT_TABLE_NAME = "Contact";
-        //对应要操作的笔记表
-        public const String NOTE_TABLE_NAME = "Note";
-
         private Service service = Service.Instance;
+        private const String CONTACT_TABLE_NAME = "Contact";
+        private const String NOTE_TABLE_NAME = "Note"; 
 
-        //新建联系人
-        private void CreateContact()
+        public MainWindowViewModel()
         {
-            //获取当前登录的用户
+
+        }
+
+        // 新建联系人
+        public void createContact(String name)
+        {
             UserObject user = (UserObject)BmobUser.CurrentUser;
-            //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject(CONTACT_TABLE_NAME);
-            contact.contactName = "获取到的联系人名字";
-            //添加数据关联，即添加外键
+            ContactObject contact = new ContactObject();
+            contact.contactName = name;
             contact.user = user;
-            //有2种新建方法，带有Task功能
-            //public Task<CreateCallbackData> CreateTaskAsync(string tablename, IBmobWritable data);data=contact
-            //public Task<CreateCallbackData> CreateTaskAsync<T>(T data) where T : BmobTable;
-            //保存数据，采用第二种方法,返回的future可以输出信息
+
             var future = service.Bmob.CreateTaskAsync<ContactObject>(contact);
-            // 用 future 来输出成功与否的信息
-            //try
-            //{
-            //    string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
-            //    Console.WriteLine(s);
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
-            //}
+            try {
+                string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
+                Console.WriteLine(s);
+            } catch {
+                MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
+            }
 
             // ！！！ 直接获取异步对象结果会阻塞主线程！ 建议使用async + await/callback的形式， 
             //可以参考文件上传功能的实现。
@@ -55,7 +45,7 @@ namespace MarkIt.SignInAndSignUp.ViewModel
         private void EditContact()
         {
             //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.contactName = "你要修改的信息";
             contact.objectId = "你要修改的联系人的ID";
             //有2种新建方法，带有Task功能
@@ -65,12 +55,12 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             var future = service.Bmob.UpdateTaskAsync<ContactObject>(contact);
 
         }
-         
+
         //删除联系人
         private void DeleteContact()
         {
             //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.objectId = "你要删除的联系人的ID";
             //有2种新建方法，带有Task功能
             //public Task<DeleteCallbackData> DeleteTaskAsync(string tablename, string objectId);
@@ -83,10 +73,10 @@ namespace MarkIt.SignInAndSignUp.ViewModel
         private void CreateNoteText()
         {
             //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.objectId = "你要绑定的联系人的ID";
             //在构造时指定了数据表
-            NoteObject note = new NoteObject(NOTE_TABLE_NAME);
+            NoteObject note = new NoteObject();
             //添加数据关联，即添加外键
             note.contact = contact;
             note.text = "用户输入的文本信息(可能含表情)";
@@ -116,10 +106,10 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             //先上传,此时的 Result是一个URL地址，可以存于本地数据库，其实我们的云端数据库上存储的也是url才对...
             var Result = await service.Bmob.FileUploadTaskAsync("本地图片的地址");
             //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.objectId = "你要绑定的联系人的ID";
             //在构造时指定了数据表
-            NoteObject note = new NoteObject(NOTE_TABLE_NAME);
+            NoteObject note = new NoteObject();
             //添加数据关联，即添加外键
             note.contact = contact;
             //文本应该为空，到时候便于确认是文本信息还是图片信息，但是也可以弄多个字段出来标识type。
@@ -157,7 +147,7 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             //按发布时间降序排列
             query.OrderByDescending("updatedAt");
             //获取当前用户信息
-            UserObject user = (UserObject)BmobUser.CurrentUser;
+            UserObject user = ( UserObject )BmobUser.CurrentUser;
             //查询当前用户的所有联系人，第一个参数为对应的字段，请注意
             query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));
             // or use

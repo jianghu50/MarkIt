@@ -1,4 +1,4 @@
-﻿using MarkIt.SignInAndSignUp.View;
+﻿using MarkIt.MainInterface;
 using MarkIt.Util;
 using System;
 using System.Windows;
@@ -6,7 +6,7 @@ using System.Windows.Media.Imaging;
 using cn.bmob.io;
 using cn.bmob.json;
 
-namespace MarkIt
+namespace MarkIt.SignInAndSignUp
 {
     public partial class SignInWindow: Window
     {

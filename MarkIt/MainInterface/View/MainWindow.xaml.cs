@@ -1,15 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Windows;
-using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
-namespace MarkIt
+namespace MarkIt.MainInterface
 {
-    /// <summary>
-    /// MainWindow.xaml 的交互逻辑
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow: Window
     {
+        MainWindowViewModel viewModel = new MainWindowViewModel();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -26,30 +27,61 @@ namespace MarkIt
 
             //listBox.Items.Add("一哥");
             //listBox.Items.Add("二哥");
-            //listBox.Items.Add("三哥");
-            //listBox.Items.Add("四哥");
-            //listBox.Items.Add("五哥");
-            //listBox.Items.Add("六哥");
-            //listBox.Items.Add("七哥");
-            //listBox.Items.Add("八哥");
-            //listBox.Items.Add("九哥");
-            //listBox.Items.Add("十哥");
-            //listBox.Items.Add("十一哥");
-            //listBox.Items.Add("十二哥");
-            //listBox.Items.Add("十三哥");
-            //listBox.Items.Add("十四哥");
-            //listBox.Items.Add("十五哥");
-            //listBox.Items.Add("十六哥");
+
+            contactsListBox.SelectionMode = System.Windows.Controls.SelectionMode.Single;
+            contextMenu.Items.Add("删除联系人");
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void CreateContact_Click(object sender, RoutedEventArgs e)
         {
+            AddContactBox contactWindow = new AddContactBox();
 
+            //注册contactWindow_MyEvent方法的MyEvent事件
+            contactWindow.MyEvent += new MyDelegate(contactWindow_MyEvent);
+            contactWindow.ShowDialog();
         }
 
         private void listBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
 
+        }
+
+        // 联系人排序
+        private void Sorted(System.Windows.Controls.ListBox listBox)
+        {
+            ArrayList contacts = new ArrayList();
+            foreach(String o in listBox.Items) {
+                contacts.Add(o);
+            }
+            contacts.Sort();
+            listBox.Items.Clear();
+            foreach(String o in contacts) {
+                listBox.Items.Add(o);
+            }
+        }
+
+        //处理
+        void contactWindow_MyEvent(string text)
+        {
+            bool isOrNotRepeated = false;
+            //判断联系人姓名是否重复
+            foreach(String o in contactsListBox.Items) {
+
+                if(o.Equals(text)) {
+                    System.Windows.MessageBox.Show("联系人姓名重复，请重新输入", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    isOrNotRepeated = true;
+                }
+            }
+            if(isOrNotRepeated == false) {
+                this.contactsListBox.Items.Add(text);
+                Sorted(contactsListBox);
+            }
+        }
+
+        private void contactsListBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            if(contactsListBox.SelectedItem == null)
+                e.Handled = true;
         }
     }
 

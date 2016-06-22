@@ -1,4 +1,4 @@
-﻿<Window x:Class="MarkIt.MainWindow"
+﻿<Window x:Class="MarkIt.MainInterface.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,23 +8,28 @@
         mc:Ignorable="d"
         Title="MarkIt"
         Height="500"
-        Width="800">
+        Width="800"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Menu>
             <MenuItem Header="文件">
-                <MenuItem Header="新建(_N)" InputGestureText="Ctrl+N" />
-                <MenuItem Header="打开(_O)" InputGestureText="Ctrl+O" />
+                <MenuItem Header="新建(_N)"
+                          InputGestureText="Ctrl+N" />
+                <MenuItem Header="打开(_O)"
+                          InputGestureText="Ctrl+O" />
                 <Separator />
-                <MenuItem Header="保存(_S)" InputGestureText="Ctrl+S" />
+                <MenuItem Header="保存(_S)"
+                          InputGestureText="Ctrl+S" />
                 <MenuItem Header="另存为" />
                 <Separator />
                 <MenuItem Header="退出(_X)" />
             </MenuItem>
             <MenuItem Header="编辑(_E)">
-                <MenuItem Header="创建新联系人" Click="MenuItem_Click"/>
+                <MenuItem Header="创建新联系人"
+                          Click="CreateContact_Click" />
                 <MenuItem Command="Copy" />
                 <MenuItem Command="Cut" />
-                <MenuItem Command="Paste"/>
+                <MenuItem Command="Paste" />
             </MenuItem>
             <MenuItem Header="帮助">
                 <MenuItem Header="操作帮助..." />
@@ -33,10 +38,16 @@
             <MenuItem Header="同步">
             </MenuItem>
         </Menu>
-        <ListBox Name="listBox" 
+        <ListBox Name="contactsListBox"
                  Margin="0,20,550,0"
                  FontSize="20"
-                 SelectionChanged="listBox_SelectionChanged">
+                 ContextMenuOpening="contactsListBox_ContextMenuOpening">
+            <ListBox.ContextMenu>
+                <ContextMenu Name="contextMenu" />
+            </ListBox.ContextMenu>
         </ListBox>
+        <ListBox Name="messageListBox"
+                 Margin="250,20,0,0"></ListBox>
     </Grid>
+
 </Window>

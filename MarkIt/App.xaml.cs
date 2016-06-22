@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
-using cn.bmob.api;
-using cn.bmob.io;
-using cn.bmob.json;
-using cn.bmob.tools;
-
-using MarkIt.SignInAndSignUp.View;
+using MarkIt.MainInterface;
 using MarkIt.Util;
 
 namespace MarkIt
 {
-    /// <summary>
-    /// App.xaml 的交互逻辑
-    /// </summary>
     public partial class App : Application
     {
         private Service service = Service.Instance;
@@ -34,7 +20,7 @@ namespace MarkIt
 
             //  TestUserData window = new TestUserData();
             //  window.Show();
-            MainWindow window = new MarkIt.MainWindow();
+            MainWindow window = new MainWindow();
             window.Show();
         }
 
