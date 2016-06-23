@@ -10,13 +10,17 @@ using System.Windows;
 
 namespace MarkIt.MainInterface
 {
+    public delegate void ContactsDidChangedDelegate(string[] contacts);
+
     class MainWindowViewModel
     {
         private Service service = Service.Instance;
         private BmobUser user;
 
-        private const String contactTableName = "Contact";
-        private const String noteTableName = "Note";
+        private const string contactTableName = "Contact";
+        private const string noteTableName = "Note";
+
+        public event ContactsDidChangedDelegate contactsDidChangedDelegate;
 
         public MainWindowViewModel(BmobUser user)
         {
@@ -30,7 +34,7 @@ namespace MarkIt.MainInterface
             contact.contactName = name;
             contact.user = user;
 
-            var future = service.Bmob.CreateTaskAsync<ContactObject>(contact);
+            var future = service.Bmob.CreateTaskAsync(contact);
             try {
                 string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
                 MessageBox.Show("添加联系人成功\ncontact id："+future.Result.objectId);
@@ -40,28 +44,24 @@ namespace MarkIt.MainInterface
         }
 
         // 查询所有联系人
-        public List<ContactObject> queryAllContacts()
+        public void queryAllContacts()
         {
             var query = new BmobQuery();        
-            query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));
-            //query.OrderByDescending("updatedAt");
-            List<ContactObject> contacts = new List<ContactObject>();
+            query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));            
+            
             service.Bmob.Find<ContactObject>(contactTableName, query, (resp, exception) =>
             {
                 if(exception != null) {
                     MessageBox.Show("查询失败, 失败原因为： " + exception.Message);
                     return;
                 }
-                contacts = resp.results;
+
+                List<string> contacts = new List<string>();
+                foreach(ContactObject contact in resp.results) {
+                    contacts.Add(contact.contactName);
+                }
+                contactsDidChangedDelegate(contacts.ToArray());
             });
-
-            string str = "";
-            foreach(ContactObject contact in contacts) {
-                str += contact.contactName;
-            }
-            MessageBox.Show("人数：" + contacts.Count + "所有联系人：\n");
-
-            return contacts;
         }
 
         //编辑联系人

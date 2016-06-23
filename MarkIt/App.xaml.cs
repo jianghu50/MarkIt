@@ -1,6 +1,4 @@
 ﻿using System.Windows;
-
-using MarkIt.MainInterface;
 using MarkIt.SignInAndSignUp;
 using MarkIt.Util;
 

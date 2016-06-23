@@ -4,7 +4,7 @@ using System.Windows.Media.Imaging;
 
 namespace MarkIt.MainInterface
 {
-    public delegate void AddContactDelegate(String text);
+    public delegate void AddContactDelegate(string text);
 
     public partial class AddContactBox: Window
     {
@@ -16,13 +16,12 @@ namespace MarkIt.MainInterface
             this.Icon = BitmapFrame.Create(iconUri);
         }
 
-        //定义该委托的事件
-        public event AddContactDelegate didAddContact;
+        public event AddContactDelegate didAddContactDelegate;
 
         private void confirmButton_Click(object sender, RoutedEventArgs e)
         {
             //触发事件，将联系人信息回传到listbox中
-            didAddContact(contactTextBox.Text);
+            didAddContactDelegate(contactTextBox.Text);
             this.Close();
         }
 

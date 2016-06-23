@@ -33,7 +33,11 @@ namespace MarkIt.SignInAndSignUp
                     string password = srReader.ReadLine();
                     if(loginWithEmailAndPassword(email, password)) {
                         showMainWindow();
+                    } else {
+                        this.Show();
                     }
+                } else {
+                    this.Show();
                 }
                 srReader.Close();
             } catch(Exception ex) {

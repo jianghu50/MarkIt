@@ -3,11 +3,11 @@ using cn.bmob.io;
 
 namespace MarkIt.MainInterface
 {
-    class ContactObject: BmobTable
+    public class ContactObject: BmobTable
     {
-        private const String tableName = "Contact";
+        private const string tableName = "Contact";
 
-        public String contactName {
+        public string contactName {
             get; set;
         }
 

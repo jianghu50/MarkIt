@@ -7,8 +7,9 @@
         xmlns:local="clr-namespace:MarkIt"
         mc:Ignorable="d"
         Title="MarkIt"
-        Height="500"
-        Width="800"
+        Height="700"
+        Width="1080"
+        ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
     <Grid>
         <Menu>
@@ -22,11 +23,15 @@
                           InputGestureText="Ctrl+S" />
                 <MenuItem Header="另存为" />
                 <Separator />
-                <MenuItem Header="退出(_X)" />
+                <MenuItem Header="退出当前账户"
+                          Click="signOut_Clicked" />
+                <Separator />
+                <MenuItem Header="退出(_X)"
+                          Click="exit_Click" />
             </MenuItem>
             <MenuItem Header="编辑(_E)">
                 <MenuItem Header="创建新联系人"
-                          Click="createContact_Click" />
+                          Click="addContact_Click" />
                 <MenuItem Command="Copy" />
                 <MenuItem Command="Cut" />
                 <MenuItem Command="Paste" />
@@ -38,16 +43,31 @@
             <MenuItem Header="同步">
             </MenuItem>
         </Menu>
-        <ListBox Name="contactsListBox"
-                 Margin="0,20,550,0"
-                 FontSize="20"
-                 ContextMenuOpening="contactsListBox_ContextMenuOpening">
-            <ListBox.ContextMenu>
-                <ContextMenu Name="contextMenu" />
-            </ListBox.ContextMenu>
-        </ListBox>
-        <ListBox Name="messageListBox"
-                 Margin="250,20,0,0"></ListBox>
+        <Grid>
+            <ListBox Name="contactsListBox"
+                     Margin="0,20,764,10"
+                     FontSize="20"
+                     ContextMenuOpening="contactsListBox_ContextMenuOpening">
+                <ListBox.ContextMenu>
+                    <ContextMenu Name="contextMenu" />
+                </ListBox.ContextMenu>
+            </ListBox>
+            <ListBox Name="messageListBox"
+                     Margin="315,20,15,54" />
+            <Button x:Name="addNoteButton"
+                    Content="保存"
+                    Margin="975,622,15,10"
+                    RenderTransformOrigin="3.8,1.158" />
+            <TextBox x:Name="noteTextBox"
+                     HorizontalAlignment="Left"
+                     FontSize="18"
+                     TextAlignment="Left"
+                     VerticalContentAlignment="Center"
+                     Margin="315,622,0,10"
+                     TextWrapping="Wrap"
+                     Text="TextBox"
+                     Width="640" />
+        </Grid>
     </Grid>
 
 </Window>
