@@ -26,7 +26,7 @@
             </MenuItem>
             <MenuItem Header="编辑(_E)">
                 <MenuItem Header="创建新联系人"
-                          Click="CreateContact_Click" />
+                          Click="createContact_Click" />
                 <MenuItem Command="Copy" />
                 <MenuItem Command="Cut" />
                 <MenuItem Command="Paste" />

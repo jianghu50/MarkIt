@@ -3,6 +3,9 @@ using cn.bmob.json;
 using MarkIt.SignInAndSignUp.Model;
 using MarkIt.Util;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace MarkIt.MainInterface
@@ -10,18 +13,19 @@ namespace MarkIt.MainInterface
     class MainWindowViewModel
     {
         private Service service = Service.Instance;
-        private const String CONTACT_TABLE_NAME = "Contact";
-        private const String NOTE_TABLE_NAME = "Note"; 
+        private BmobUser user;
 
-        public MainWindowViewModel()
+        private const String contactTableName = "Contact";
+        private const String noteTableName = "Note";
+
+        public MainWindowViewModel(BmobUser user)
         {
-
+            this.user = user;
         }
-
-        // 新建联系人
-        public void createContact(String name)
+        
+        // 添加联系人
+        public void addContact(String name)
         {
-            UserObject user = (UserObject)BmobUser.CurrentUser;
             ContactObject contact = new ContactObject();
             contact.contactName = name;
             contact.user = user;
@@ -29,16 +33,35 @@ namespace MarkIt.MainInterface
             var future = service.Bmob.CreateTaskAsync<ContactObject>(contact);
             try {
                 string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
-                Console.WriteLine(s);
+                MessageBox.Show("添加联系人成功\ncontact id："+future.Result.objectId);
             } catch {
                 MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
             }
+        }
 
-            // ！！！ 直接获取异步对象结果会阻塞主线程！ 建议使用async + await/callback的形式， 
-            //可以参考文件上传功能的实现。
-            //获取创建记录的objectId
-            contact.objectId = future.Result.objectId;
-            //此处应有提示创建成功信息或执行其他操作。
+        // 查询所有联系人
+        public List<ContactObject> queryAllContacts()
+        {
+            var query = new BmobQuery();        
+            query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));
+            //query.OrderByDescending("updatedAt");
+            List<ContactObject> contacts = new List<ContactObject>();
+            service.Bmob.Find<ContactObject>(contactTableName, query, (resp, exception) =>
+            {
+                if(exception != null) {
+                    MessageBox.Show("查询失败, 失败原因为： " + exception.Message);
+                    return;
+                }
+                contacts = resp.results;
+            });
+
+            string str = "";
+            foreach(ContactObject contact in contacts) {
+                str += contact.contactName;
+            }
+            MessageBox.Show("人数：" + contacts.Count + "所有联系人：\n" + contacts[0].createdAt);
+
+            return contacts;
         }
 
         //编辑联系人
@@ -138,25 +161,7 @@ namespace MarkIt.MainInterface
         //跟上面那个乱七八糟的方法是同一条船的。
         //delegate void doUiThread();
 
-        //查询数据
-        private void QueryContact()
-        {
-            //查找表中的全部数据（默认最多返回10条数据）,方便分页查询，后面我贴出分页查询的方法
-            //先定义个查询对象
-            var query = new BmobQuery();
-            //按发布时间降序排列
-            query.OrderByDescending("updatedAt");
-            //获取当前用户信息
-            UserObject user = ( UserObject )BmobUser.CurrentUser;
-            //查询当前用户的所有联系人，第一个参数为对应的字段，请注意
-            query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));
-            // or use
-            // query.WhereMatchesQuery("user", user);
-            //查询的结果在future中
-            var future = service.Bmob.FindTaskAsync<ContactObject>(CONTACT_TABLE_NAME, query);
-            //对返回结果进行处理,future本身就是一个list了。 不过可能需要类型转换一下，我也不会。
-
-        }
+        
 
         private void QueryNote()
         {
@@ -172,7 +177,7 @@ namespace MarkIt.MainInterface
             // or use
             // query.WhereMatchesQuery("user", user);
             //查询的结果在future中
-            var future = service.Bmob.FindTaskAsync<NoteObject>(NOTE_TABLE_NAME, query);
+            var future = service.Bmob.FindTaskAsync<NoteObject>(noteTableName, query);
             //对返回结果进行处理,future本身就是一个list了。 不过可能需要类型转换一下，我也不会。
         }
 
