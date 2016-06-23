@@ -59,7 +59,7 @@ namespace MarkIt.MainInterface
             foreach(ContactObject contact in contacts) {
                 str += contact.contactName;
             }
-            MessageBox.Show("人数：" + contacts.Count + "所有联系人：\n" + contacts[0].createdAt);
+            MessageBox.Show("人数：" + contacts.Count + "所有联系人：\n");
 
             return contacts;
         }
