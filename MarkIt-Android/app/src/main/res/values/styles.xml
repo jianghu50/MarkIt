@@ -26,4 +26,8 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    <style name="contextMenuAnim" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@animator/context_menu_enter</item>
+        <item name="android:windowExitAnimation">@animator/context_menu_exit</item>
+    </style>
 </resources>

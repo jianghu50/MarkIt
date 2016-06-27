@@ -120,12 +120,7 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
         }
     }
     private void getContacts(){
-
-
         mContactList = MyDatabaseManager.queryContacts(MyDatabaseManager.userId);
-
-
-
     }
 
     @Override
@@ -133,17 +128,11 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
         String contact = ((TextView)view).getText().toString();
 
         // mEditText.setText(contact);
-
         removeContactDialog(contact);
-
-
-
-
     }
 
     private void removeContactDialog(String contact){
         mFloatContactEventListener.floatContactEvent(contact);
-
         MyWindowManager.removeFloatContact(mContext);
     }
 

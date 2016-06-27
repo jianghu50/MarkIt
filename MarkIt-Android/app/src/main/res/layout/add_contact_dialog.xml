@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:text="添加联系人"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:id="@+id/textView"
+            android:paddingBottom="5dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="5dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="4dp"
+            android:id="@+id/dialog_editText"
+            android:layout_gravity="bottom"
+            android:textColor="@color/black"
+            android:theme="@style/Theme.App.Base"
+            android:textCursorDrawable="@drawable/cursor_style"
+            android:textSize="20sp"
+            android:background="@drawable/contact_edittext_selector"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="6dp"
+                android:id="@+id/cancel"
+                android:text="@string/cancel"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:clickable="true" />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="6dp"
+                android:id="@+id/add"
+                android:text="添加"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:clickable="true"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>
