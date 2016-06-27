@@ -42,6 +42,10 @@
         -->
         <!-- test user by kasper 16.4.21 -->
         <activity android:name=".TestUserActivity" />
+		
+        <!-- test user by kasper 16.4.21-->
+        <activity android:name=".test.TestUserActivity"/>
+
         <activity
             android:name=".ui.EmptyActivity"
             android:theme="@style/AppTheme.NoActionBar">

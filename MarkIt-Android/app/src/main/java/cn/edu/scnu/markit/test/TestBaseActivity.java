@@ -1,4 +1,4 @@
-package cn.edu.scnu.markit;
+package cn.edu.scnu.markit.test;
 
 import android.app.Activity;
 import android.os.Bundle;

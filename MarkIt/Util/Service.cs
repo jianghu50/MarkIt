@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using cn.bmob.api;
-using cn.bmob.io;
-using cn.bmob.json;
-using cn.bmob.tools;
-
+﻿using cn.bmob.api;
 
 namespace MarkIt.Util
 {

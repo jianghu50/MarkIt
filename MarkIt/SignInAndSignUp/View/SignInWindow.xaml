@@ -1,4 +1,4 @@
-﻿<Window x:Class="MarkIt.SignInWindow"
+﻿<Window x:Class="MarkIt.SignInAndSignUp.SignInWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -91,7 +91,7 @@
                 BorderThickness="0"
                 Background="#FF5BCC1A"
                 Click="signInButton_Click"/>
-        <Button x:Name="forgetButton"
+        <Button x:Name="forgetPasswordButton"
                 Content="忘记密码"
                 HorizontalAlignment="Left"
                 Margin="30,381,0,0"
@@ -101,8 +101,8 @@
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
                 FontWeight="Bold" 
-                Click="forgetButton_Click"/>
-        <Button x:Name="changeButton"
+                Click="forgetPasswordButton_Click"/>
+        <Button x:Name="changePasswordButton"
                 Content="修改密码"
                 HorizontalAlignment="Left"
                 Margin="290,381,0,0"
@@ -112,7 +112,7 @@
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
                 FontWeight="Bold" 
-                Click="changeButton_Click"/>
+                Click="changePasswordButton_Click"/>
         <Button x:Name="signUpButton"
                 Content="注册"
                 HorizontalAlignment="Left"
