@@ -153,6 +153,9 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
                     startActivity(intent);
                 }else if(menuItemId == R.id.action_refresh){
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 return false;
             }
@@ -196,12 +199,12 @@ public class MainActivity extends AppCompatActivity
                             Log.i("addNewContact", "isClicked");
                             Toast.makeText(mContext,R.string.pleaseInputNewContact,Toast.LENGTH_SHORT).show();
                         }else {
-                            /*contactList.add(text);
+                            contactList.add(text);
                             final int size = contactList.size();
                             contacts = (String[])contactList.toArray(new String[size]);
                             SourceDateList = SortContacts.sortContactsByPinyin(contacts);
                             Collections.sort(SourceDateList, pinyinComparator);
-                            sortAdapter.notifyDataSetChanged();这部分，还是没有用*/
+                            //sortAdapter.notifyDataSetChanged();
                             MyDatabaseManager.insertContact(text);
                             Log.i("addNewContact", text);
                             Toast.makeText(mContext,"添加联系人成功",Toast.LENGTH_SHORT).show();
@@ -261,7 +264,6 @@ public class MainActivity extends AppCompatActivity
                         String contactName = sortModel.getName();
                         int contactID = MyDatabaseManager.getContactId(contactName);
                         MyDatabaseManager.deleteContact(contactID);
-
                         dialog.dismiss();
                     }
                 });

@@ -1,7 +1,12 @@
 package cn.edu.scnu.markit.ui;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -40,6 +46,8 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     private TextView mScreenShot = null;
     private TextView mCancelTextView = null;
     private TextView mAddTextView = null;
+    private ImageView mImage = null;
+    private ImageView mImage2 = null;
     private Context mContext = null;
 
     private ListView contactList = null;
@@ -76,6 +84,12 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
         mCancelTextView.setOnClickListener(this);
         mAddTextView.setOnClickListener(this);
+
+        mImage = (ImageView) findViewById(R.id.imageView1);
+        mImage.setOnClickListener(this);
+
+        mImage2 = (ImageView) findViewById(R.id.imageView2);
+        mImage2.setOnClickListener(this);
     }
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -112,6 +126,12 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.screenShot:
                 getScreenShot();
+                break;
+            case R.id.imageView1:
+                mImage.setVisibility(View.GONE);
+                break;
+            case R.id.imageView2:
+                mImage2.setVisibility(View.GONE);
                 break;
             default:
                 break;
@@ -181,7 +201,31 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         });
     }
     private void getScreenShot() {
-        InsertPictureUtils.insertPicture(mContext,mEditText);
+        Intent intent=new Intent(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, 0);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Drawable d =null;
+        Uri uri1 = data.getData();
+        Cursor cursor = this.getContentResolver().query(uri1, new String[]{"_data"},null, null, null);
+        if(cursor.moveToFirst()) {
+            String otherfile = cursor.getString(0);
+            d = Drawable.createFromPath(otherfile);
+        }
+        if(mImage.getVisibility() != View.VISIBLE){
+            mImage.setVisibility(View.VISIBLE);
+            mImage.setImageDrawable(d);
+        }else if(mImage2.getVisibility() !=View.VISIBLE){
+            mImage2.setVisibility(View.VISIBLE);
+            mImage2.setImageDrawable(d);
+        }else{
+            Toast.makeText(mContext,"图片已满",Toast.LENGTH_SHORT).show();
+        }
     }
     private void addContactNote(){
         String note = mEditText.getText().toString();
