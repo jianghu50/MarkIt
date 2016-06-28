@@ -3,11 +3,7 @@ package cn.edu.scnu.markit;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-
-import android.app.ActionBar;
-import android.content.Context;
 import android.content.DialogInterface;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,26 +14,17 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
@@ -46,21 +33,19 @@ import cn.edu.scnu.markit.adapter.LatestNoteAdapter;
 import cn.edu.scnu.markit.adapter.RecordAdapter;
 import cn.edu.scnu.markit.adapter.SortAdapter;
 import cn.edu.scnu.markit.floatwindow.FloatWindowService;
-import cn.edu.scnu.markit.floatwindow.FloatWindowView;
 import cn.edu.scnu.markit.javabean.CharacterParser;
 import cn.edu.scnu.markit.javabean.Contact;
 import cn.edu.scnu.markit.javabean.LatestNoteOfContacts;
 import cn.edu.scnu.markit.javabean.Note;
 import cn.edu.scnu.markit.javabean.PinyinComparator;
 import cn.edu.scnu.markit.javabean.SortModel;
-
 import cn.edu.scnu.markit.javabean.User;
-import cn.edu.scnu.markit.test.TestContactActivity;
 import cn.edu.scnu.markit.ui.AddNoteActivity;
 import cn.edu.scnu.markit.ui.ContactNotesActivity;
 import cn.edu.scnu.markit.ui.view.SideBar;
 import cn.edu.scnu.markit.util.CommonUtils;
 import cn.edu.scnu.markit.util.DataManager;
+import cn.edu.scnu.markit.util.DataSyncManager;
 import cn.edu.scnu.markit.util.MyDatabaseManager;
 import cn.edu.scnu.markit.util.SortContacts;
 
@@ -100,20 +85,19 @@ public class MainActivity extends AppCompatActivity
     private List<LatestNoteOfContacts> noteOfContacts ;
 
 
-    private Context context = this;
+    private List<String> contactList;
 
-    /**map 保存联系人的姓名和id**/
-    private Map<String,String> contactNameWithId = new HashMap<>();
+    private String[] contacts;
 
-    /**保存联系人最新笔记**/
-    private  List<LatestNoteOfContacts> noteOfContacts = new ArrayList<>();
+    private Context mContext = this;
+
 
     /**数据加载时，显示**/
     private ProgressDialog mProgressDialog = null;
 
     /**判断数据是否下载完成**/
-   public static final int DOWNLOAD_DATA_SUCCESS = 1;
-
+    public static final int DOWNLOAD_DATA_SUCCESS = 1;
+    public static final int DOWNLOAD_CONTACTS_SUCCESS = 2;
     private Handler mHandler = null;
 
 
@@ -159,14 +143,42 @@ public class MainActivity extends AppCompatActivity
         mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
-                if (DOWNLOAD_DATA_SUCCESS == msg.what){
+                switch (msg.what){
+                    case DOWNLOAD_DATA_SUCCESS:
+                        leftDraw(); //左侧滑框
+                        initViews();//主界面
+
+                        mProgressDialog.dismiss();
+                        break;
+                    case DOWNLOAD_CONTACTS_SUCCESS:
+                        List<Contact>  myList = DataManager.getDataManager().getContactList();
+
+                        contactList.clear();
+                        for (Contact contact:myList){
+                            contactList.add(contact.getContactName());
+                        }
+                        final int size = contactList.size();
+                        contacts = (String[])contactList.toArray(new String[size]);
+                        SourceDateList = SortContacts.sortContactsByPinyin(contacts);
+
+                        // 根据a-z进行排序源数据
+                        Collections.sort(SourceDateList, pinyinComparator);
+                        sortAdapter = new SortAdapter(mContext, SourceDateList);
+                        sortListView.setAdapter(sortAdapter);
+
+                        mProgressDialog.dismiss();
+                        break;
+                    default:
+                        break;
+                }
+               /* if (DOWNLOAD_DATA_SUCCESS == msg.what){
 
                     leftDraw(); //左侧滑框
                     initViews();//主界面
 
                     mProgressDialog.dismiss();
 
-                }
+                }*/
             }
         };
     }
@@ -176,9 +188,13 @@ public class MainActivity extends AppCompatActivity
      */
     private void initProgressDialog(){
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("正在加载数据,请稍后");
         mProgressDialog.setCancelable(false);
 
+    }
+
+    private void showProgressDialog(String message){
+        mProgressDialog.setMessage(message);
+        mProgressDialog.show();
     }
 
     /**
@@ -217,9 +233,6 @@ public class MainActivity extends AppCompatActivity
         main_toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         main_toolbar.setNavigationIcon(R.drawable.contact);
         main_toolbar.inflateMenu(R.menu.menu_main_toolbar);
-
-        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
 
 
         //创建返回键，并实现打开关/闭监听
@@ -283,6 +296,7 @@ public class MainActivity extends AppCompatActivity
         contact_toolbar.setTitle("联系人");
         contact_toolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
+
         contact_toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -296,16 +310,18 @@ public class MainActivity extends AppCompatActivity
                             Log.i("addNewContact", "isClicked");
                             Toast.makeText(mContext,R.string.pleaseInputNewContact,Toast.LENGTH_SHORT).show();
                         }else {
-                            contactList.add(text);
+
+                            DataSyncManager.createContact(mContext, text);
+                           /* contactList.add(text);
                             final int size = contactList.size();
                             contacts = (String[])contactList.toArray(new String[size]);
                             SourceDateList = SortContacts.sortContactsByPinyin(contacts);
-                            Collections.sort(SourceDateList, pinyinComparator);
-                            //sortAdapter.notifyDataSetChanged();
-                            MyDatabaseManager.insertContact(text);
-                            Log.i("addNewContact", text);
+                            Collections.sort(SourceDateList, pinyinComparator);*/
+
+                            downLoadContacts();
+
                             Toast.makeText(mContext,"添加联系人成功",Toast.LENGTH_SHORT).show();
-                            //removeContactDialog(newContact);
+
                         }
                     }
                 }).setNegativeButton("取消", null).show();
@@ -341,7 +357,7 @@ public class MainActivity extends AppCompatActivity
                 //Toast.makeText(getApplication(), ((SortModel)sortAdapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
                 SortModel sortModel = (SortModel) sortListView.getItemAtPosition(position);
                 String contactName = sortModel.getName();
-                int contactId = MyDatabaseManager.getContactId(contactName);
+                String contactId = MyDatabaseManager.getContactId(contactName);
                 Intent intent = new Intent(MainActivity.this, ContactNotesActivity.class);
                 intent.putExtra("contactId",contactId);
                 intent.putExtra("contactName",contactName);
@@ -360,8 +376,8 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         SortModel sortModel = (SortModel) sortListView.getItemAtPosition(position);
                         String contactName = sortModel.getName();
-                        int contactID = MyDatabaseManager.getContactId(contactName);
-                        MyDatabaseManager.deleteContact(contactID);
+                        String contactID = MyDatabaseManager.getContactId(contactName);
+                        //MyDatabaseManager.deleteContact(contactID);
                         dialog.dismiss();
                     }
                 });
@@ -375,7 +391,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-        contactList = MyDatabaseManager.queryContacts(MyDatabaseManager.userId);
+        contactList = MyDatabaseManager.queryContacts();
 
 
         final int size = contactList.size();
@@ -390,11 +406,44 @@ public class MainActivity extends AppCompatActivity
 
 
     /**
+     * 添加完联系人后，需要重新加载全部联系人
+     */
+    private void downLoadContacts(){
+        showProgressDialog("正在添加联系人,请稍后");
+
+        User myUser = BmobUser.getCurrentUser(this, User.class);
+
+        final String userId = myUser.getObjectId();
+
+        Log.i("UserId------->",userId);
+
+        BmobQuery<Contact> query = new BmobQuery<>();
+
+        query.addWhereEqualTo("user", myUser);
+        query.setLimit(100);
+        query.addWhereEqualTo("isDelete", false);
+        query.findObjects(this, new FindListener<Contact>() {
+            @Override
+            public void onSuccess(List<Contact> list) {
+                DataManager.getDataManager().setContactList(list);
+                Message msg = Message.obtain();
+                msg.what = DOWNLOAD_CONTACTS_SUCCESS;
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onError(int i, String s) {
+
+            }
+        });
+    }
+
+    /**
      * 加载数据,先加载用户的联系人，存储在数据库中，再根据联系人，加载联系人对应的笔记
      */
     private void downLoadData(){
 
-            mProgressDialog.show();
+            showProgressDialog("正在加载数据,请稍后");
 
             User myUser = BmobUser.getCurrentUser(this, User.class);
 
@@ -480,9 +529,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        noteOfContacts = getRecordData();
+       /* noteOfContacts = getRecordData();
         latestNoteAdapter.notifyDataSetChanged(); //没有用。
-        sortAdapter.notifyDataSetChanged(); //没有用
+        sortAdapter.notifyDataSetChanged(); //没有用*/
     }
 
 }

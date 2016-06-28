@@ -3,39 +3,40 @@ package cn.edu.scnu.markit.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.adapter.FloatContactViewAdapter;
 import cn.edu.scnu.markit.floatwindow.FloatContactView;
-import cn.edu.scnu.markit.floatwindow.MyWindowManager;
-import cn.edu.scnu.markit.util.InsertPictureUtils;
-import cn.edu.scnu.markit.util.MyDatabaseManager;
+import cn.edu.scnu.markit.javabean.Contact;
+import cn.edu.scnu.markit.javabean.User;
+import cn.edu.scnu.markit.util.DataManager;
+import cn.edu.scnu.markit.util.DataSyncManager;
 
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,16 +54,42 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     private ListView contactList = null;
     private EditText editContact = null;
     private TextView addContact = null;
-    private FloatContactViewAdapter<String> adapter = null;
-    private List<String> mContactList = new ArrayList<String>();
+    private FloatContactViewAdapter adapter = null;
+    private List<Contact> mContactList = null;//new ArrayList<Contact>();
+
+    private Handler mHandler = null;
+
+    public static final int ADD_CONTACT_SUCCESS = 1;
+
+    private String chooseContactId = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         getSupportActionBar().setTitle("添加");
         mContext = this.getApplicationContext();
+        initHandler();
         initViews();
     }
+
+
+    private void initHandler(){
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (ADD_CONTACT_SUCCESS == msg.what){
+                    Log.i("size---->", String.valueOf(mContactList.size()));
+
+                    FloatContactViewAdapter newAdapter = new FloatContactViewAdapter(mContext,mContactList);
+                    contactList.setAdapter(newAdapter);
+
+                }
+            }
+        };
+    }
+
+
     private void initViews() {
         mEditText = (EditText)findViewById(R.id.editText);
         mEditText.addTextChangedListener(textWatcher);
@@ -151,14 +178,17 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         final PopupWindow popup = new PopupWindow(root, ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT, true);
         contactList =(ListView) root.findViewById(R.id.contact_dialog_listView);
         editContact = (EditText) root.findViewById(R.id.contact_dialog_editText);
-        mContactList = MyDatabaseManager.queryContacts(MyDatabaseManager.userId);
-        adapter = new FloatContactViewAdapter<String>(mContext,R.layout.listview_item,mContactList);
+        //mContactList = MyDatabaseManager.queryContacts();
+        mContactList = DataManager.getDataManager().getContactList();
+        adapter = new FloatContactViewAdapter(mContext,mContactList);
         contactList.setAdapter(adapter);
         contactList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(popup.isShowing()){
-                    mContactTextView.setText(mContactList.get(position));
+                    Contact contact = (Contact)contactList.getItemAtPosition(position);
+                    chooseContactId = contact.getObjectId();
+                    mContactTextView.setText(contact.getContactName());
                     popup.dismiss();
                 }
             }
@@ -173,9 +203,47 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                     Log.i("addNewContact", "isClicked");
                     Toast.makeText(mContext,R.string.pleaseInputNewContact,Toast.LENGTH_SHORT).show();
                 }else {
-                    mContactList.add(text);
-                    adapter.notifyDataSetChanged();
-                    MyDatabaseManager.insertContact(text);
+
+                    DataSyncManager.createContact(mContext, text);
+
+                    //添加完联系人，再次全部读取网上的联系人
+                    User myUser = BmobUser.getCurrentUser(mContext, User.class);
+
+                    final String userId = myUser.getObjectId();
+
+                    Log.i("UserId------->", userId);
+
+                    BmobQuery<Contact> query = new BmobQuery<>();
+
+                    query.addWhereEqualTo("user", myUser);
+                    query.setLimit(100);
+                    query.addWhereEqualTo("isDelete", false);
+                    query.findObjects(mContext, new FindListener<Contact>() {
+                        @Override
+                        public void onSuccess(List<Contact> list) {
+                            if (list.size() != 0) {
+                                DataManager.getDataManager().setContactList(list);
+                                mContactList = list;
+
+                                //setListViewHeight();      //设置listView高度
+
+                                Message msg = Message.obtain();
+                                msg.what = ADD_CONTACT_SUCCESS;
+                                mHandler.sendMessage(msg);
+                            } else {
+                                Log.i("TAG----->", "list size is 0");
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(int i, String s) {
+
+                        }
+                    });
+
+
+                    //MyDatabaseManager.insertContact(text);
                     Log.i("addNewContact", text);
                     Toast.makeText(mContext,"添加联系人成功",Toast.LENGTH_SHORT).show();
                     //removeContactDialog(newContact);
@@ -239,7 +307,9 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(mContext,R.string.select_contact,Toast.LENGTH_SHORT).show();
                 return;
             }else {
-                MyDatabaseManager.insertNote(note,contactName);
+                Log.i("chooseContactId",chooseContactId);
+                DataSyncManager.createNote(mContext, chooseContactId, note);
+                //MyDatabaseManager.insertNote(note,contactName);
                 Toast.makeText(mContext,"添加成功",Toast.LENGTH_SHORT).show();
                 finish();
             }
