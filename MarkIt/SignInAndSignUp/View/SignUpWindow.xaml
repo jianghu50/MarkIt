@@ -15,10 +15,10 @@
         Width="380"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        WindowStyle="None"
-        
+        WindowStyle="None"  
         BorderBrush="White">
-    <Grid Background="#FF2D2D30">
+    
+    <Grid Background="#FF37474F">
         <Button x:Name="backButton"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"

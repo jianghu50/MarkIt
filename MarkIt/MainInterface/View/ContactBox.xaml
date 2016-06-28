@@ -15,46 +15,26 @@
         Width="400"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
-<<<<<<< HEAD:MarkIt/MainInterface/View/ContactBox.xaml
-    <Grid Height="70"
-          Width="400">
+    <Grid  Height="70"
+           Width="400">
         <TextBox Name="contactTextBox"
-                 Height="20"
-                 Margin="24,22,175,28" />
-        <Button x:Name="confirmButton"
-                Width="50"
-                Height="20"
-                Margin="245,22,105,28"
-                Content="确定"
-                Click="confirmButton_Click" />
-        <Button Name="cancelButton"
-                Width="50"
-                Height="20"
-                Margin="310,20,34,25"
-                Content="取消"
-                Click="cancelButton_Click" />
-=======
-    <Grid  Height="70" Width="400" >
-        <TextBox Name="contactTextBox"
-                 Width="150"
                  Height="30"
                  BorderBrush="White"
-                 
-                 Margin="20,20,227.5,20"
-                 FontSize="10"
-                 />
+                 Margin="21,20,195,20"
+                 FontSize="14" />
         <Button x:Name="confirmButton"
                 Width="60"
-                Height="30" Margin="230,20,110,20"
+                Height="30"
+                Margin="230,20,110,20"
                 Content="确定"
-                FontSize="10"
-                Click="confirmButton_Click"/>
+                FontSize="13"
+                Click="confirmButton_Click" />
         <Button Name="cancelButton"
                 Width="60"
-                Height="30" Margin="310,20,30,20"
+                Height="30"
+                Margin="310,20,30,20"
                 Content="取消"
-                FontSize="10"
-                Click="cancelButton_Click"/>
->>>>>>> 6b4b9e4546a45d865adc6452a01ce1bb78054428:MarkIt/MainInterface/View/AddContactBox.xaml
+                FontSize="13"
+                Click="cancelButton_Click" />
     </Grid>
 </Window>

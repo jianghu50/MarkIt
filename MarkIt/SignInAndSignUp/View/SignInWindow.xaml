@@ -5,17 +5,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkIt"
-
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
         Title="登录"
         Height="520"
         Width="380"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        WindowStyle="None"
-  
+        WindowStyle="None"  
         BorderBrush="White">
-    <Grid Background="#FF2D2D30">
+    
+    <Grid Background="#FF37474F">
         <Button x:Name="closeButton"
                 HorizontalAlignment="Right"
                 Margin="0"
