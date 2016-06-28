@@ -18,7 +18,7 @@ import cn.edu.scnu.markit.javabean.LatestNoteOfContacts;
  */
 public class MyDatabaseManager {
 
-    public static String userId;
+    public static String userId ;
 
     public static MyDatabaseHelper dbHelper;
 
@@ -31,7 +31,7 @@ public class MyDatabaseManager {
     /*
     设置时间格式
      */
-    private static  SimpleDateFormat    formatter    =   new SimpleDateFormat("yyyy年MM月dd日    HH:mm:ss     ");
+    private static SimpleDateFormat formatter    =   new SimpleDateFormat("yyyy年MM月dd日    HH:mm:ss     ");
 
     public static void insertUser(String id,String userName,String password){
         db = dbHelper.getWritableDatabase();
@@ -48,13 +48,14 @@ public class MyDatabaseManager {
 
     /**
      * 添加联系人
-     * @param contact 联系人姓名
+     * @param contactName 联系人姓名
      */
-    public static void insertContact(String contact){
+    public static void insertContact(String objectId,String contactName){
         db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
-        cv.put("contactName",contact);
+        cv.put("objectId",objectId);
+        cv.put("contactName",contactName);
         cv.put("userId",userId);
 
         db.insert(CONTACT_TABLE, null, cv);
@@ -62,15 +63,17 @@ public class MyDatabaseManager {
     }
     /**
      * 查询用户对应添加的联系人
-     * @param userId 查询的用户ID
      * @return  联系人列表
      */
-    public static List<String> queryContacts(String userId){
+    public static List<String> queryContacts(){
         List<String> list = new ArrayList<String>();
 
         db = dbHelper.getWritableDatabase();
 
-        Cursor cursor = db.query(CONTACT_TABLE,null,null,null,null,null,null);
+        String where = "userId=?";
+        String []whereValue = {userId};
+
+        Cursor cursor = db.query(CONTACT_TABLE,new String[]{"contactName"},where,whereValue,null,null,null);
         if (cursor.moveToFirst()){
             do{
                 /*Contact contact = new Contact();
@@ -80,9 +83,7 @@ public class MyDatabaseManager {
                 list.add(contact);
             }while (cursor.moveToNext());
         }
-
         cursor.close();
-
         return list;
     }
 
@@ -91,18 +92,18 @@ public class MyDatabaseManager {
      * @param contactName
      * @return
      */
-    public static int getContactId(String contactName){
-        int id;
+    public static String getContactId(String contactName){
+        String objectId;
         db = dbHelper.getWritableDatabase();
-        String where = "contactName=?";
-        String []whereValue = {contactName};
-        Cursor cursor = db.query(CONTACT_TABLE,new String[]{"id"},where,whereValue,null,null,null,null);
+        String where = "contactName=? and userId=?";
+        String []whereValue = {contactName,userId};
+        Cursor cursor = db.query(CONTACT_TABLE,new String[]{"objectId"},where,whereValue,null,null,null,null);
         if (cursor.moveToFirst()){
-            id = cursor.getInt(cursor.getColumnIndex("id"));
-            return id;
+            objectId = cursor.getString(cursor.getColumnIndex("objectId"));
+            return objectId;
         }
 
-        return -1;
+        return "";
     }
 
 
@@ -119,24 +120,25 @@ public class MyDatabaseManager {
 
     /**
      * 插入笔记
+     * @param objectId 服务器中笔记的id
      * @param note  插入的笔记
+     * @param contactId 对应联系人的id
      * @param contactName   对应的联系人
      */
-    public static void insertNote(String note,String contactName){
+    public static void insertNote(String objectId,String note,String contactId,String contactName,String date){
         db = dbHelper.getWritableDatabase();
 
 
-        Date    curDate    =   new Date(System.currentTimeMillis());//获取当前时间
+        Date curDate    =   new Date(System.currentTimeMillis());//获取当前时间
         String    dateStr    =    formatter.format(curDate);
 
-        int contactId = getContactId(contactName);
-
         ContentValues cv = new ContentValues();
+        cv.put("objectId",objectId);
         cv.put("contactId",contactId);
         cv.put("note",note);
         cv.put("contactName",contactName);
         cv.put("image",0);
-        cv.put("date",dateStr);
+        cv.put("date", date);
 
         db.insert(NOTE_TABLE, null, cv);
 
@@ -155,16 +157,18 @@ public class MyDatabaseManager {
 
         Cursor cursor = db.rawQuery(sql2,null);
 
+        Log.i("queryLatestNote","into");
+
         if (cursor.moveToFirst()){
             do {
                 LatestNoteOfContacts latestNoteOfContacts = new LatestNoteOfContacts();
-                latestNoteOfContacts.setContactId(cursor.getInt(cursor.getColumnIndex("contactId")));
+                latestNoteOfContacts.setContactId(cursor.getString(cursor.getColumnIndex("contactId")));
                 latestNoteOfContacts.setContactName(cursor.getString(cursor.getColumnIndex("contactName")));
                 latestNoteOfContacts.setNote(cursor.getString(cursor.getColumnIndex("note")));
                 latestNoteOfContacts.setDate(cursor.getString(cursor.getColumnIndex("date")));
                 list.add(latestNoteOfContacts);
 
-                Log.i("contactId--------->",String.valueOf(latestNoteOfContacts.getContactId()));
+                Log.i("queryLatestNote", latestNoteOfContacts.getContactId());
             }while (cursor.moveToNext());
 
         }
@@ -176,18 +180,18 @@ public class MyDatabaseManager {
      * @param contactId 客户id
      * @return
      */
-    public static List<AllNotesOfContact> queryAllNotesForContact(int contactId){
+    public static List<AllNotesOfContact> queryAllNotesForContact(String contactId){
         List<AllNotesOfContact> list = new ArrayList<AllNotesOfContact>();
         db = dbHelper.getWritableDatabase();
         String where = "contactId=?";
-        String[] whereArgs = {String.valueOf(contactId)};
-        Cursor cursor = db.query(NOTE_TABLE, new String[]{"id", "note", "date"}, where, whereArgs, null, null, "date" + " DESC");
+        String[] whereArgs = {contactId};
+        Cursor cursor = db.query(NOTE_TABLE, new String[]{"objectId", "note", "date"}, where, whereArgs, null, null, "date" + " DESC");
         if (cursor.moveToFirst()){
             do {
                 AllNotesOfContact allNotesOfContact = new AllNotesOfContact();
                 allNotesOfContact.setNote(cursor.getString(cursor.getColumnIndex("note")));
                 allNotesOfContact.setDate(cursor.getString(cursor.getColumnIndex("date")));
-                allNotesOfContact.setNoteId(cursor.getInt(cursor.getColumnIndex("id")));
+                allNotesOfContact.setNoteId(cursor.getString(cursor.getColumnIndex("objectId")));
                 list.add(allNotesOfContact);
 
             }while (cursor.moveToNext());
@@ -235,5 +239,17 @@ public class MyDatabaseManager {
         cv.put("date",dateStr);
 
         db.update(NOTE_TABLE,cv,"id = ?",new String[]{String.valueOf(id)});
+    }
+
+
+    //清除所有Notes表中所有数据
+
+    public static void deleteAllContacts(){
+        db = dbHelper.getWritableDatabase();
+        db.execSQL("delete from " + CONTACT_TABLE);
+    }
+    public static void deleteAllNotes(){
+        db = dbHelper.getWritableDatabase();
+        db.execSQL("delete from " + NOTE_TABLE);
     }
 }

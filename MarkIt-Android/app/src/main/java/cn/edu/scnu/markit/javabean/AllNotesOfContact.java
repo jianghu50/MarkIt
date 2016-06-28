@@ -7,15 +7,15 @@ public class AllNotesOfContact {
     /**
      * 笔记id,便于对笔记的更改，删除，进行操作
      */
-    private int noteId;
+    private String noteId;
     private String note;
     private String date;
 
-    public int getNoteId() {
+    public String getNoteId() {
         return noteId;
     }
 
-    public void setNoteId(int noteId) {
+    public void setNoteId(String noteId) {
         this.noteId = noteId;
     }
 

@@ -15,8 +15,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.edu.scnu.markit.R;
+import cn.edu.scnu.markit.javabean.Contact;
+import cn.edu.scnu.markit.util.DataManager;
+import cn.edu.scnu.markit.util.DataSyncManager;
 import cn.edu.scnu.markit.util.InsertPictureUtils;
-import cn.edu.scnu.markit.util.MyDatabaseManager;
 
 /**
  * Created by jialin on 2016/5/2.
@@ -78,8 +80,6 @@ public class FloatWindowView extends RelativeLayout implements View.OnClickListe
      */
     private View contentView = null;
 
-
-
     public FloatWindowView(final Context context) {
         super(context);
         floatWindowLayout = LayoutInflater.from(context).inflate(R.layout.float_window_layout, this);
@@ -93,6 +93,8 @@ public class FloatWindowView extends RelativeLayout implements View.OnClickListe
         viewHeight = contentView.getLayoutParams().height;
 
         mContext = context;
+
+
 
         initViews();
 
@@ -158,13 +160,7 @@ public class FloatWindowView extends RelativeLayout implements View.OnClickListe
                 MyWindowManager.createFloatButton(mContext);
                 break;
             case R.id.float_window_add:
-               /* MyWindowManager.removeFloatButton(mContext);
-                MyWindowManager.removeFloatWindow(mContext);
-
-                Intent intent = new Intent(mContext,FloatWindowService.class);      //关闭service
-                mContext.stopService(intent);*/
                 addContactNote();
-
                 break;
             case R.id.float_window_contact_arrow:
             case R.id.float_window_contact_icon:
@@ -191,11 +187,16 @@ public class FloatWindowView extends RelativeLayout implements View.OnClickListe
                 return;
             }else {
 
-                MyDatabaseManager.insertNote(note,contactName);
+                Contact contact = DataManager.getDataManager().getContact();
+                Log.i("addContact",contact.getContactName() + " " + contact.getObjectId());
 
+                DataSyncManager.createNote(mContext, contact.getObjectId(), note);
                 MyWindowManager.removeFloatWindow(mContext);
+                }
+
+
             }
-        }
+
     }
 
         /**

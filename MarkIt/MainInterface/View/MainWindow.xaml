@@ -5,12 +5,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkIt"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MarkIt"
         Height="700"
         Width="1080"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+<<<<<<< HEAD
 
     <Window.Resources>
         <ResourceDictionary Source="NoteListBoxItem.xaml"></ResourceDictionary>
@@ -18,24 +25,53 @@
     
     <Grid>
         <Menu>
+=======
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+>>>>>>> 6b4b9e4546a45d865adc6452a01ce1bb78054428
             <MenuItem Header="文件">
                 <MenuItem Header="新建(_N)"
-                          InputGestureText="Ctrl+N" />
+                          InputGestureText="Ctrl+N" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="File"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <MenuItem Header="打开(_O)"
-                          InputGestureText="Ctrl+O" />
+                          InputGestureText="Ctrl+O" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="OpenInNew"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
                 <MenuItem Header="保存(_S)"
-                          InputGestureText="Ctrl+S" />
-                <MenuItem Header="另存为" />
+                          InputGestureText="Ctrl+S" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentSave"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="另存为" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentSave"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
                 <MenuItem Header="退出当前账户"
-                          Click="signOut_Clicked" />
+                          Click="signOut_Clicked" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="AccountCircle"/>
+                    </MenuItem.Icon>
+                </MenuItem>
                 <Separator />
                 <MenuItem Header="退出(_X)"
-                          Click="exit_Click" />
+                          Click="exit_Click" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ExitToApp"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
-            <MenuItem Header="编辑(_E)">
+            <MenuItem Header="编辑">
                 <MenuItem Header="创建新联系人"
+<<<<<<< HEAD
                           Click="addContact_Click" />
                 <Separator></Separator>
                 <MenuItem Command="Copy" />
@@ -46,12 +82,68 @@
                           Click="sync_Click" />
                 <MenuItem Header="导出"
                           Click="export_Click" />
+=======
+                          Click="addContact_Click" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="Account"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Command="Copy" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind ="ContentCopy"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Command="Cut" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentCut"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Command="Paste" >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="ContentPaste"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="帮助">
+                <MenuItem Header="操作帮助..." >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="HelpCircle"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="关于..." >
+                    <MenuItem.Icon>
+                        <materialDesign:PackIcon Kind="RelativeScale"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="同步">
+>>>>>>> 6b4b9e4546a45d865adc6452a01ce1bb78054428
             </MenuItem>
         </Menu>
-        <Grid>
+        <ToolBarTray  DockPanel.Dock="Top">
+            <ToolBar >
+                <Button ToolTip="新建" >
+                    <materialDesign:PackIcon Kind="Account"/>
+                </Button>
+                <Button ToolTip="Save" >
+                    <materialDesign:PackIcon Kind="ContentSave"/>
+                </Button>
+                <Button ToolTip="Cut" >
+                    <materialDesign:PackIcon Kind="ContentCut"/>
+                </Button>
+                <Button ToolTip="Copy" >
+                    <materialDesign:PackIcon Kind="ContentCopy"/>
+                </Button>
+                <Button ToolTip="Paste" >
+                    <materialDesign:PackIcon Kind="ContentPaste"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid DockPanel.Dock="Top">
             <ListBox Name="contactsListBox"
-                     Margin="0,20,764,10"
+                     Margin="15,0,764,15"
                      FontSize="20"
+<<<<<<< HEAD
                      ContextMenuOpening="contactsListBox_ContextMenuOpening"
                      SelectionChanged="contactsListBox_SelectionChanged">
                 <ListBox.ContextMenu>
@@ -67,6 +159,12 @@
                      Margin="315,20,15,54"
                      DisplayMemberPath="NoteText"
                      Style="{DynamicResource ResourceKey=noteListBox}">
+=======
+                     
+                     BorderBrush="White"
+                     BorderThickness="1"
+                     ContextMenuOpening="contactsListBox_ContextMenuOpening">
+>>>>>>> 6b4b9e4546a45d865adc6452a01ce1bb78054428
                 <ListBox.ContextMenu>
                     <ContextMenu Name="noteMenu">
                         <MenuItem Header="复制记录"
@@ -78,6 +176,7 @@
                     </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
+<<<<<<< HEAD
             <Button x:Name="addNoteButton"
                     Content="保存"
                     Margin="975,622,15,10"
@@ -91,7 +190,28 @@
                      Margin="315,622,0,10"
                      TextWrapping="Wrap"
                      Width="640" />
+=======
+            <ListBox Name="messageListBox"
+                     
+                     BorderBrush="White"
+                     BorderThickness="1"
+                     Margin="300,0,15,110"/>
+            <TextBox Name="messageTextBox"
+                     BorderBrush="White"
+                     BorderThickness="1"
+                     Margin="300,450,180,15"
+                     FontSize="14"
+                     TextWrapping="Wrap"
+                     AcceptsReturn="True"
+                     VerticalScrollBarVisibility="Visible"/>
+            <Button Style="{DynamicResource MaterialDesignFloatingActionDarkButton }"
+                Name="saveButton"
+                    Content="保存"
+                Margin="940,470,60,30">
+            </Button>
+
+>>>>>>> 6b4b9e4546a45d865adc6452a01ce1bb78054428
         </Grid>
-    </Grid>
+    </DockPanel>
 
 </Window>

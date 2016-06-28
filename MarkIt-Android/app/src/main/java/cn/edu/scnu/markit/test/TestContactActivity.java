@@ -1,8 +1,6 @@
 package cn.edu.scnu.markit.test;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,10 +14,8 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.listener.DeleteListener;
-import cn.bmob.v3.listener.DownloadFileListener;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 import cn.bmob.v3.listener.UploadFileListener;
 import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.javabean.Contact;
@@ -104,11 +100,13 @@ public class TestContactActivity extends TestBaseActivity {
         contact.setContactName("张三");
         //添加一对多关联
         contact.setUser(myUser);
+        //设置删除字段为否
+        contact.setIsDelete(false);
         //将数据上传到云端：save(Context context,SaveListener listener)
         contact.save(this, new SaveListener() {
             @Override
             public void onSuccess() {
-                //添加成功后可以在我们的服务器上查看到该数据。
+                //添加成功后可以在我们的服务器上查看到该数据
             }
 
             @Override
@@ -149,20 +147,20 @@ public class TestContactActivity extends TestBaseActivity {
 //        // 该用户的所有联系人
 //        //然后通过adapter将所有联系人显示出来，用户点击其中一个联系人，这时才获取到该联系人
 //        //contact类对象，然后获取到该联系人的ID，然后再进行删除
-//        Contact c = new Contact();
-//        c.setObjectId("获取到的ID");
-//        //delete(Context context, DeleteListener d)
-//        c.delete(TestContactActivity.this, new DeleteListener() {
-//            @Override
-//            public void onSuccess() {
-//                //删除成功后的操作.....
-//            }
-//
-//            @Override
-//            public void onFailure(int i, String s) {
-//
-//            }
-//        });
+        Contact c = new Contact();
+        c.setObjectId("50709af930");
+        //delete(Context context, DeleteListener d)
+        c.delete(TestContactActivity.this, new DeleteListener() {
+            @Override
+            public void onSuccess() {
+                //删除成功后的操作.....
+            }
+
+            @Override
+            public void onFailure(int i, String s) {
+
+            }
+        });
     }
 
     /**

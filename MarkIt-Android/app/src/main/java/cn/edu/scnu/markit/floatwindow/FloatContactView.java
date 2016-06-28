@@ -3,6 +3,8 @@ package cn.edu.scnu.markit.floatwindow;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -15,12 +17,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.listener.FindListener;
 import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.adapter.FloatContactViewAdapter;
-import cn.edu.scnu.markit.util.MyDatabaseManager;
+import cn.edu.scnu.markit.javabean.Contact;
+import cn.edu.scnu.markit.javabean.User;
+import cn.edu.scnu.markit.util.DataManager;
+import cn.edu.scnu.markit.util.DataSyncManager;
 
 /**
  * Created by jialin on 2016/5/11.
@@ -54,15 +61,19 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
     private TextView mSearchTextView = null;
     private ListView mContactListView = null;
 
-    //private String[] mContacts = null;
-
     private SQLiteDatabase db;
 
-    private List<String> mContactList = new ArrayList<String>();
+    private DataManager dataManager = DataManager.getDataManager();
 
-    private FloatContactViewAdapter<String> adapter = null;
+    private List<Contact> mContactList ;
+
+    private FloatContactViewAdapter adapter = null;
 
     private IFloatContactEventListener mFloatContactEventListener = null;
+
+    private Handler mHandler = null;
+
+    public static final int ADD_CONTACT_SUCCESS = 1;
 
     public FloatContactView(Context context,IFloatContactEventListener listener) {
         super(context);
@@ -82,12 +93,29 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
 
         mContext = context;
 
-        getContacts();
+        mContactList = dataManager.getContactList();
+
+        initHandler();
 
         initViews();
     }
 
 
+
+    private void initHandler(){
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                if (ADD_CONTACT_SUCCESS == msg.what){
+                    Log.i("size---->", String.valueOf(mContactList.size()));
+
+                    FloatContactViewAdapter newAdapter = new FloatContactViewAdapter(mContext,mContactList);
+                    mContactListView.setAdapter(newAdapter);
+
+                }
+            }
+        };
+    }
 
     private void initViews(){
         mAddTextView = (TextView)findViewById(R.id.contact_dialog_addIcon);
@@ -99,59 +127,48 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
         mSearchTextView.setOnClickListener(this);
 
         mContactListView = (ListView)findViewById(R.id.contact_dialog_listView);
+
         setListViewHeight();      //设置listView高度
         mContactListView.setAdapter(contactAdapter());
         mContactListView.setOnItemClickListener(this);
     }
 
-    private FloatContactViewAdapter<String> contactAdapter(){
+    private FloatContactViewAdapter contactAdapter(){
 
-        //List<String> list = Arrays.asList(contacts);   //字符串数组转换成list
-
-        adapter = new FloatContactViewAdapter<String>(mContext,R.layout.listview_item,mContactList);
+        adapter = new FloatContactViewAdapter(mContext, mContactList);
         return adapter;
     }
 
     private void setListViewHeight(){
+
         if (mContactList.size() > 5){
             ViewGroup.LayoutParams layoutParams = mContactListView.getLayoutParams();
             layoutParams.height = MyWindowManager.getScreenHeight(mContext) / 2 - 50;
             mContactListView.setLayoutParams(layoutParams);
         }
     }
-    private void getContacts(){
 
-
-        mContactList = MyDatabaseManager.queryContacts(MyDatabaseManager.userId);
-
-
-
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Contact addContact = (Contact)mContactListView.getItemAtPosition(position);
+
+        DataManager.getDataManager().setContact(addContact);
         String contact = ((TextView)view).getText().toString();
-
-        // mEditText.setText(contact);
-
         removeContactDialog(contact);
-
-
 
 
     }
 
     private void removeContactDialog(String contact){
-        mFloatContactEventListener.floatContactEvent(contact);
 
+        mFloatContactEventListener.floatContactEvent(contact);
         MyWindowManager.removeFloatContact(mContext);
     }
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-
-        Log.i("对话框","FloatContactOnTouch");
 
         int x = (int)event.getX();
         int y = (int)event.getY();
@@ -180,29 +197,54 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
     }
 
     private void addNewContact(){
-        //Log.i("addNewContact","isClicked");
+
         String newContact = mEditText.getText().toString();
-       /* db = MyDatabaseManager.dbHelper.getWritableDatabase();
-
-        ContentValues cv = new ContentValues();
-        cv.put("contactName",newContact);
-
-        db.insert("Contacts",null,cv);*/
-
-
 
         if (newContact.length() == 0){
             Log.i("addNewContact", "isClicked");
             Toast.makeText(mContext,R.string.pleaseInputNewContact,Toast.LENGTH_SHORT).show();
         }else {
-            mContactList.add(newContact);
-            setListViewHeight();      //设置listView高度
-            adapter.notifyDataSetChanged();
 
-            MyDatabaseManager.insertContact(newContact);
 
+
+            DataSyncManager.createContact(mContext, newContact);
+
+            //添加完联系人，再次全部读取网上的联系人
+            User myUser = BmobUser.getCurrentUser(mContext, User.class);
+
+            final String userId = myUser.getObjectId();
+
+            Log.i("UserId------->", userId);
+
+            BmobQuery<Contact> query = new BmobQuery<>();
+
+            query.addWhereEqualTo("user", myUser);
+            query.setLimit(100);
+            query.addWhereEqualTo("isDelete", false);
+            query.findObjects(mContext, new FindListener<Contact>() {
+                @Override
+                public void onSuccess(List<Contact> list) {
+                    if (list.size() != 0) {
+                        DataManager.getDataManager().setContactList(list);
+                        mContactList = list;
+
+                        setListViewHeight();      //设置listView高度
+
+                        Message msg = Message.obtain();
+                        msg.what = ADD_CONTACT_SUCCESS;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        Log.i("TAG----->", "list size is 0");
+
+                    }
+                }
+                @Override
+                public void onError(int i, String s) {
+
+                }
+            });
             Log.i("addNewContact", newContact);
-            //removeContactDialog(newContact);
+
         }
     }
     /**

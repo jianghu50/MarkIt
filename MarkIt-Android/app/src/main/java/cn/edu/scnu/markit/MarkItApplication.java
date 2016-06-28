@@ -36,6 +36,8 @@ public class MarkItApplication extends Application{
 
     private static final String DATABASE_NAME = "UserStore.db";
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();

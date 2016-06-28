@@ -4,12 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkIt.MainInterface"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
         Title="MarkIt"
         Height="100"
         Width="400"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+<<<<<<< HEAD:MarkIt/MainInterface/View/ContactBox.xaml
     <Grid Height="70"
           Width="400">
         <TextBox Name="contactTextBox"
@@ -27,5 +33,28 @@
                 Margin="310,20,34,25"
                 Content="取消"
                 Click="cancelButton_Click" />
+=======
+    <Grid  Height="70" Width="400" >
+        <TextBox Name="contactTextBox"
+                 Width="150"
+                 Height="30"
+                 BorderBrush="White"
+                 
+                 Margin="20,20,227.5,20"
+                 FontSize="10"
+                 />
+        <Button x:Name="confirmButton"
+                Width="60"
+                Height="30" Margin="230,20,110,20"
+                Content="确定"
+                FontSize="10"
+                Click="confirmButton_Click"/>
+        <Button Name="cancelButton"
+                Width="60"
+                Height="30" Margin="310,20,30,20"
+                Content="取消"
+                FontSize="10"
+                Click="cancelButton_Click"/>
+>>>>>>> 6b4b9e4546a45d865adc6452a01ce1bb78054428:MarkIt/MainInterface/View/AddContactBox.xaml
     </Grid>
 </Window>
