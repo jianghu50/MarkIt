@@ -166,8 +166,6 @@ public class MyWindowManager {
                         textView.setText(contact);
 
                     }
-
-
                 }
             });
             if (floatContactParams == null) {

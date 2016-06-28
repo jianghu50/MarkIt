@@ -120,10 +120,12 @@ public class ContactNotesActivity extends AppCompatActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_add_note:
+                Intent intent = new Intent(ContactNotesActivity.this,AddNoteActivity.class);
+                startActivity(intent);
                 break;
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
+                Intent intent1 = new Intent(this, MainActivity.class);
+                startActivity(intent1);
                 finish();
                 break;
         }

@@ -50,11 +50,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bmob-Windows">
-      <HintPath>..\..\..\软件案例\C#-SDK\target\Windows\Bmob-Windows.dll</HintPath>
+    <Reference Include="Bmob-Windows, Version=1.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>quote\Bmob-Windows.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -73,10 +76,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="SignInAndSignUp\Model\TestContactObject.cs" />
-    <Compile Include="SignInAndSignUp\Model\TestNoteObject.cs" />
-    <Compile Include="SignInAndSignUp\Model\TestUserObject.cs" />
-    <Compile Include="SignInAndSignUp\ViewModel\TestSprint2.cs" />
+    <Compile Include="MainInterface\Model\ContactObject.cs" />
+    <Compile Include="MainInterface\Model\NoteObject.cs" />
+    <Compile Include="MainInterface\View\AddContactBox.xaml.cs">
+      <DependentUpon>AddContactBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SignInAndSignUp\Model\UserObject.cs" />
+    <Compile Include="MainInterface\ViewModel\MainWindowViewModel.cs" />
     <Compile Include="SignInAndSignUp\View\SignUpWindow.xaml.cs">
       <DependentUpon>SignUpWindow.xaml</DependentUpon>
     </Compile>
@@ -84,6 +90,10 @@
       <DependentUpon>TestUserData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\Service.cs" />
+    <Page Include="MainInterface\View\AddContactBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SignInAndSignUp\View\SignInWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -144,8 +154,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MainInterface\Model\" />
-    <Folder Include="MainInterface\ViewModel\" />
+    <Folder Include="SignInAndSignUp\ViewModel\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">

@@ -83,9 +83,7 @@ public class MyDatabaseManager {
                 list.add(contact);
             }while (cursor.moveToNext());
         }
-
         cursor.close();
-
         return list;
     }
 

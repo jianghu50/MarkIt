@@ -5,21 +5,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarkIt.SignInAndSignUp.Model
+namespace MarkIt.MainInterface.Model
 {
-    class TestNoteObject:BmobTable
+    class TestNoteObject: BmobTable
     {
         //对应的数据表 笔记对应的数据表名为：“Note”
         private String fTable;
 
-        public string text { get; set; }
+        public string text {
+            get; set;
+        }
 
-        public BmobFile image { get; set; }
+        public BmobFile image {
+            get; set;
+        }
 
-        public BmobPointer<TestContactObject> contact { get; set; }
+        public BmobPointer<TestContactObject> contact {
+            get; set;
+        }
 
         //构造函数
-        public TestNoteObject() { }
+        public TestNoteObject()
+        {
+        }
 
         //构造函数
         public TestNoteObject(String tableName)
@@ -27,12 +35,9 @@ namespace MarkIt.SignInAndSignUp.Model
             this.fTable = tableName;
         }
 
-        public override string table
-        {
-            get
-            {
-                if (fTable != null)
-                {
+        public override string table {
+            get {
+                if(fTable != null) {
                     return fTable;
                 }
                 return base.table;

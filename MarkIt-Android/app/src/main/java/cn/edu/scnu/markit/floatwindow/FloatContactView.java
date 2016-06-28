@@ -148,6 +148,7 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
         }
     }
 
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Contact addContact = (Contact)mContactListView.getItemAtPosition(position);
@@ -156,12 +157,12 @@ public class FloatContactView extends RelativeLayout implements View.OnTouchList
         String contact = ((TextView)view).getText().toString();
         removeContactDialog(contact);
 
+
     }
 
     private void removeContactDialog(String contact){
 
         mFloatContactEventListener.floatContactEvent(contact);
-
         MyWindowManager.removeFloatContact(mContext);
     }
 

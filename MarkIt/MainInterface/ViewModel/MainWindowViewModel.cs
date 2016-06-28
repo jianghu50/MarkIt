@@ -1,92 +1,105 @@
 ﻿using cn.bmob.io;
+using cn.bmob.json;
 using MarkIt.SignInAndSignUp.Model;
 using MarkIt.Util;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
-namespace MarkIt.SignInAndSignUp.ViewModel
+namespace MarkIt.MainInterface
 {
-    class TestSprint2
+    public delegate void ContactsDidChangedDelegate(string[] contacts);
+
+    class MainWindowViewModel
     {
-        //对应要操作的联系人表
-        public const String CONTACT_TABLE_NAME = "Contact";
-        //对应要操作的笔记表
-        public const String NOTE_TABLE_NAME = "Note";
-
         private Service service = Service.Instance;
+        private BmobUser user;
 
-        //新建联系人
-        private void CreateContact()
+        private const string contactTableName = "Contact";
+        private const string noteTableName = "Note";
+
+        public event ContactsDidChangedDelegate contactsDidChangedDelegate;
+
+        public MainWindowViewModel(BmobUser user)
         {
-            //获取当前登录的用户
-            TestUserObject user = (TestUserObject)BmobUser.CurrentUser;
-            //在构造的时候指定了数据表
-            TestContactObject contact = new TestContactObject(CONTACT_TABLE_NAME);
-            contact.contactName = "获取到的联系人名字";
-            //添加数据关联，即添加外键
+            this.user = user;
+        }
+        
+        // 添加联系人
+        public void addContact(String name)
+        {
+            ContactObject contact = new ContactObject();
+            contact.contactName = name;
             contact.user = user;
-            //有2种新建方法，带有Task功能
-            //public Task<CreateCallbackData> CreateTaskAsync(string tablename, IBmobWritable data);data=contact
-            //public Task<CreateCallbackData> CreateTaskAsync<T>(T data) where T : BmobTable;
-            //保存数据，采用第二种方法,返回的future可以输出信息
-            var future = service.Bmob.CreateTaskAsync<TestContactObject>(contact);
-            // 用 future 来输出成功与否的信息
-            //try
-            //{
-            //    string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
-            //    Console.WriteLine(s);
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
-            //}
 
-            // ！！！ 直接获取异步对象结果会阻塞主线程！ 建议使用async + await/callback的形式， 
-            //可以参考文件上传功能的实现。
-            //获取创建记录的objectId
-            contact.objectId = future.Result.objectId;
-            //此处应有提示创建成功信息或执行其他操作。
+            var future = service.Bmob.CreateTaskAsync(contact);
+            try {
+                string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
+                MessageBox.Show("添加联系人成功\ncontact id："+future.Result.objectId);
+            } catch {
+                MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
+            }
+        }
+
+        // 查询所有联系人
+        public void queryAllContacts()
+        {
+            var query = new BmobQuery();        
+            query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));            
+            
+            service.Bmob.Find<ContactObject>(contactTableName, query, (resp, exception) =>
+            {
+                if(exception != null) {
+                    MessageBox.Show("查询失败, 失败原因为： " + exception.Message);
+                    return;
+                }
+
+                List<string> contacts = new List<string>();
+                foreach(ContactObject contact in resp.results) {
+                    contacts.Add(contact.contactName);
+                }
+                contactsDidChangedDelegate(contacts.ToArray());
+            });
         }
 
         //编辑联系人
         private void EditContact()
         {
             //在构造的时候指定了数据表
-            TestContactObject contact = new TestContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.contactName = "你要修改的信息";
             contact.objectId = "你要修改的联系人的ID";
             //有2种新建方法，带有Task功能
             //public Task<UpdateCallbackData> UpdateTaskAsync(string tablename, string objectId, IBmobWritable data);
             //public Task<UpdateCallbackData> UpdateTaskAsync<T>(T data) where T : BmobTable;
             //保存数据，采用第二种方法，返回的future可以输出信息
-            var future = service.Bmob.UpdateTaskAsync<TestContactObject>(contact);
+            var future = service.Bmob.UpdateTaskAsync<ContactObject>(contact);
 
         }
-         
+
         //删除联系人
         private void DeleteContact()
         {
             //在构造的时候指定了数据表
-            TestContactObject contact = new TestContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.objectId = "你要删除的联系人的ID";
             //有2种新建方法，带有Task功能
             //public Task<DeleteCallbackData> DeleteTaskAsync(string tablename, string objectId);
             //public Task<DeleteCallbackData> DeleteTaskAsync<T>(T data) where T : BmobTable;
             //保存数据，采用第二种方法,返回的future可以输出信息
-            var future = service.Bmob.DeleteTaskAsync<TestContactObject>(contact);
+            var future = service.Bmob.DeleteTaskAsync<ContactObject>(contact);
         }
 
         //新建笔记文本
         private void CreateNoteText()
         {
             //在构造的时候指定了数据表
-            TestContactObject contact = new TestContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.objectId = "你要绑定的联系人的ID";
             //在构造时指定了数据表
-            TestNoteObject note = new TestNoteObject(NOTE_TABLE_NAME);
+            NoteObject note = new NoteObject();
             //添加数据关联，即添加外键
             note.contact = contact;
             note.text = "用户输入的文本信息(可能含表情)";
@@ -96,7 +109,7 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             //public Task<CreateCallbackData> CreateTaskAsync(string tablename, IBmobWritable data);data=contact
             //public Task<CreateCallbackData> CreateTaskAsync<T>(T data) where T : BmobTable;
             //保存数据，采用第二种方法,返回的future可以输出信息
-            var future = service.Bmob.CreateTaskAsync<TestNoteObject>(note);
+            var future = service.Bmob.CreateTaskAsync<NoteObject>(note);
             // 用 future 来输出成功与否的信息
             //try
             //{
@@ -116,10 +129,10 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             //先上传,此时的 Result是一个URL地址，可以存于本地数据库，其实我们的云端数据库上存储的也是url才对...
             var Result = await service.Bmob.FileUploadTaskAsync("本地图片的地址");
             //在构造的时候指定了数据表
-            TestContactObject contact = new TestContactObject(CONTACT_TABLE_NAME);
+            ContactObject contact = new ContactObject();
             contact.objectId = "你要绑定的联系人的ID";
             //在构造时指定了数据表
-            TestNoteObject note = new TestNoteObject(NOTE_TABLE_NAME);
+            NoteObject note = new NoteObject();
             //添加数据关联，即添加外键
             note.contact = contact;
             //文本应该为空，到时候便于确认是文本信息还是图片信息，但是也可以弄多个字段出来标识type。
@@ -131,7 +144,7 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             //public Task<CreateCallbackData> CreateTaskAsync(string tablename, IBmobWritable data);data=contact
             //public Task<CreateCallbackData> CreateTaskAsync<T>(T data) where T : BmobTable;
             //保存数据，采用第二种方法,返回的future可以输出信息
-            var future = service.Bmob.CreateTaskAsync<TestNoteObject>(note);
+            var future = service.Bmob.CreateTaskAsync<NoteObject>(note);
             //网站上说用下面这种办法..然而我不会。
             // callback方式异步请求处理，非阻塞访问
             //service.Bmob.Create<TestNoteObject>(note, (resp, ex) =>
@@ -148,25 +161,7 @@ namespace MarkIt.SignInAndSignUp.ViewModel
         //跟上面那个乱七八糟的方法是同一条船的。
         //delegate void doUiThread();
 
-        //查询数据
-        private void QueryContact()
-        {
-            //查找表中的全部数据（默认最多返回10条数据）,方便分页查询，后面我贴出分页查询的方法
-            //先定义个查询对象
-            var query = new BmobQuery();
-            //按发布时间降序排列
-            query.OrderByDescending("updatedAt");
-            //获取当前用户信息
-            TestUserObject user = (TestUserObject)BmobUser.CurrentUser;
-            //查询当前用户的所有联系人，第一个参数为对应的字段，请注意
-            query.WhereEqualTo("user", new BmobPointer<BmobUser>(user));
-            // or use
-            // query.WhereMatchesQuery("user", user);
-            //查询的结果在future中
-            var future = service.Bmob.FindTaskAsync<TestContactObject>(CONTACT_TABLE_NAME, query);
-            //对返回结果进行处理,future本身就是一个list了。 不过可能需要类型转换一下，我也不会。
-
-        }
+        
 
         private void QueryNote()
         {
@@ -182,7 +177,7 @@ namespace MarkIt.SignInAndSignUp.ViewModel
             // or use
             // query.WhereMatchesQuery("user", user);
             //查询的结果在future中
-            var future = service.Bmob.FindTaskAsync<TestNoteObject>(NOTE_TABLE_NAME, query);
+            var future = service.Bmob.FindTaskAsync<NoteObject>(noteTableName, query);
             //对返回结果进行处理,future本身就是一个list了。 不过可能需要类型转换一下，我也不会。
         }
 

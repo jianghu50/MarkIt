@@ -5,18 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarkIt.SignInAndSignUp.Model
+namespace MarkIt.MainInterface.Model
 {
-    class TestContactObject:BmobTable
+    class TestContactObject: BmobTable
     {
         //对应的数据表 联系人对应的数据表名为：“Contact”
         private String fTable;
 
-        public string contactName { get; set; }
-        public BmobPointer<BmobUser> user { get; set; }
+        public string contactName {
+            get; set;
+        }
+
+        public BmobPointer<BmobUser> user {
+            get; set;
+        }
 
         //构造函数
-        public TestContactObject() { }
+        public TestContactObject()
+        {
+        }
 
         //构造函数
         public TestContactObject(String tableName)
@@ -24,12 +31,9 @@ namespace MarkIt.SignInAndSignUp.Model
             this.fTable = tableName;
         }
 
-        public override string table
-        {
-            get
-            {
-                if (fTable != null)
-                {
+        public override string table {
+            get {
+                if(fTable != null) {
                     return fTable;
                 }
                 return base.table;
