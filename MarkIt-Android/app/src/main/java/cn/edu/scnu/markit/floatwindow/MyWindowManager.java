@@ -164,6 +164,7 @@ public class MyWindowManager {
                     Log.i("contact from dialog",contact);
                     if (contact.length() != 0){
                         textView.setText(contact);
+
                     }
 
 

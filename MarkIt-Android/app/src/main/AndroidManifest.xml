@@ -63,6 +63,7 @@
         <activity android:name=".ui.LoginRegisterActivity"/>
         <activity android:name=".ui.ForgetPasswordActivity"/>
         <activity android:name=".ui.ContactNotesActivity"/>
+        <activity android:name=".test.TestContactActivity"/>
 
         <service android:name=".floatwindow.FloatWindowService"/>
 
