@@ -11,6 +11,11 @@
         Width="1080"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <ResourceDictionary Source="NoteListBoxItem.xaml"></ResourceDictionary>
+    </Window.Resources>
+    
     <Grid>
         <Menu>
             <MenuItem Header="文件">
@@ -32,32 +37,52 @@
             <MenuItem Header="编辑(_E)">
                 <MenuItem Header="创建新联系人"
                           Click="addContact_Click" />
+                <Separator></Separator>
                 <MenuItem Command="Copy" />
-                <MenuItem Command="Cut" />
                 <MenuItem Command="Paste" />
             </MenuItem>
-            <MenuItem Header="帮助">
-                <MenuItem Header="操作帮助..." />
-                <MenuItem Header="关于..." />
-            </MenuItem>
-            <MenuItem Header="同步">
+            <MenuItem Header="工具">
+                <MenuItem Header="同步"
+                          Click="sync_Click" />
+                <MenuItem Header="导出"
+                          Click="export_Click" />
             </MenuItem>
         </Menu>
         <Grid>
             <ListBox Name="contactsListBox"
                      Margin="0,20,764,10"
                      FontSize="20"
-                     ContextMenuOpening="contactsListBox_ContextMenuOpening">
+                     ContextMenuOpening="contactsListBox_ContextMenuOpening"
+                     SelectionChanged="contactsListBox_SelectionChanged">
                 <ListBox.ContextMenu>
-                    <ContextMenu Name="contextMenu" />
+                    <ContextMenu Name="contactMenu">
+                        <MenuItem Header="删除联系人"
+                                  Click="deleteContact_Click" />
+                        <MenuItem Header="编辑联系人"
+                                  Click="editContact_Click" />
+                    </ContextMenu>
                 </ListBox.ContextMenu>
             </ListBox>
-            <ListBox Name="messageListBox"
-                     Margin="315,20,15,54" />
+            <ListBox Name="noteListBox"
+                     Margin="315,20,15,54"
+                     DisplayMemberPath="NoteText"
+                     Style="{DynamicResource ResourceKey=noteListBox}">
+                <ListBox.ContextMenu>
+                    <ContextMenu Name="noteMenu">
+                        <MenuItem Header="复制记录"
+                                  Click="copyNote_Click" />
+                        <MenuItem Header="编辑记录"
+                                  Click="editNote_Click" />
+                        <MenuItem Header="删除记录"
+                                  Click="deleteNote_Click" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+            </ListBox>
             <Button x:Name="addNoteButton"
                     Content="保存"
                     Margin="975,622,15,10"
-                    RenderTransformOrigin="3.8,1.158" />
+                    RenderTransformOrigin="3.8,1.158"
+                    Click="addNoteButton_Click" />
             <TextBox x:Name="noteTextBox"
                      HorizontalAlignment="Left"
                      FontSize="18"
@@ -65,7 +90,6 @@
                      VerticalContentAlignment="Center"
                      Margin="315,622,0,10"
                      TextWrapping="Wrap"
-                     Text="TextBox"
                      Width="640" />
         </Grid>
     </Grid>

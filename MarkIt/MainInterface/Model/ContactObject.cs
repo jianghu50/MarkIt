@@ -21,6 +21,7 @@ namespace MarkIt.MainInterface
 
         public ContactObject()
         {
+            isDelete = false;
         }
 
         public override string table {
