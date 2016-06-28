@@ -23,6 +23,7 @@ public class Contact extends BmobObject {
         this.contactName = contactName;
     }
 
+
     public User getUser() {
         return user;
     }

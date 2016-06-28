@@ -15,6 +15,7 @@ public class Note extends BmobObject {
 
     private Boolean isDelete;//是否删除
 
+
     public String getText() {
         return text;
     }
@@ -46,4 +47,6 @@ public class Note extends BmobObject {
     public void setIsDelete(Boolean isDelete) {
         this.isDelete = isDelete;
     }
+
+
 }
