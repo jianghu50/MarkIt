@@ -9,14 +9,15 @@ using System.IO.IsolatedStorage;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Microsoft.Office.Interop.Word;
+using System.Reflection;
 
 namespace MarkIt.MainInterface
 {
-
-
-    public partial class MainWindow: Window
+    public partial class MainWindow: System.Windows.Window
     {
         MainWindowViewModel viewModel = new MainWindowViewModel(BmobUser.CurrentUser);
+        List<ContactObject> contacts = new List<ContactObject>();
 
         public MainWindow()
         {
@@ -28,25 +29,26 @@ namespace MarkIt.MainInterface
             viewModel.contactsDidChangedDelegate += new ContactsDidChangedDelegate(contactDidChangedAction);
             viewModel.queryAllContacts();
 
+            viewModel.notesDidChangedDelegate += new NotesDidChangedDelegate(notesDidChangedAction);
+
             contactsListBox.SelectionMode = SelectionMode.Single;
-            contextMenu.Items.Add("删除联系人");        
         }
 
-        private void contactDidChangedAction(string[] contacts)
+        private void contactDidChangedAction(List<ContactObject> contacts)
         {
-            Dispatcher.Invoke( delegate {
+            Dispatcher.Invoke(delegate {
+                this.contacts = contacts;
                 contactsListBox.Items.Clear();
-                foreach(string contact in contacts) {
-                    contactsListBox.Items.Add(contact);
+                foreach(ContactObject contact in contacts) {
+                    contactsListBox.Items.Add(contact.contactName);
                 }
-                sortContacts();
+                //sortContacts();
             });
-            
         }
 
         private void addContact_Click(object sender, RoutedEventArgs e)
         {
-            AddContactBox contactWindow = new AddContactBox();
+            ContactBox contactWindow = new ContactBox(true);
             contactWindow.didAddContactDelegate += new AddContactDelegate(didAddContactAction);
             contactWindow.ShowDialog();
         }
@@ -66,22 +68,7 @@ namespace MarkIt.MainInterface
             if(isRepeated == false) {
                 contactsListBox.Items.Add(name);
                 viewModel.addContact(name);
-                sortContacts();
-            }
-        }
-
-        // 联系人排序
-        private void sortContacts()
-        {
-            List<string> contacts = new List<string>();
-            foreach(string contact in contactsListBox.Items) {
-                contacts.Add(contact);
-            }
-            contacts.Sort();
-
-            contactsListBox.Items.Clear();
-            foreach(string contact in contacts) {
-                contactsListBox.Items.Add(contact);
+                //sortContacts();
             }
         }
 
@@ -110,11 +97,138 @@ namespace MarkIt.MainInterface
 
         private void exit_Click(object sender, RoutedEventArgs e)
         {
-
-            this.Close(); 
+            this.Close();
         }
 
-        
+        private void contactsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selectedIndex = contactsListBox.SelectedIndex;
+            if(selectedIndex != -1) {
+                noteListBox.Items.Clear();
+                viewModel.queryNote(contacts[selectedIndex]);
+            }
+        }
+
+        private void notesDidChangedAction(List<NoteObject> notes)
+        {
+            Dispatcher.Invoke(delegate {
+                noteListBox.Items.Clear();
+                foreach(NoteObject note in notes) {
+                    noteListBox.Items.Add(note);
+                }
+            });
+        }
+
+        private void addNoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = contactsListBox.SelectedIndex;
+            if(selectedIndex != -1) {
+                viewModel.addNote(contacts[selectedIndex], noteTextBox.Text);
+                noteTextBox.Clear();
+            }
+        }
+
+        private void deleteContact_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = contactsListBox.SelectedIndex;
+            if(selectedIndex != -1) {
+                viewModel.deleteContact(contacts[selectedIndex]);
+                noteListBox.Items.Clear();
+            }
+        }
+
+        private void editContact_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = contactsListBox.SelectedIndex;
+            if(selectedIndex != -1) {
+                ContactBox contactWindow = new ContactBox(false);
+                contactWindow.contactTextBox.Text = contacts[selectedIndex].contactName;
+                contactWindow.editContactDelegate += new EditContactDelegate(didEditContactAction);
+                contactWindow.ShowDialog();
+            }
+        }
+
+        private void didEditContactAction(string name)
+        {
+            bool isRepeated = false;
+            //判断联系人姓名是否重复
+            foreach(String contact in contactsListBox.Items) {
+                if(contact.Equals(name)) {
+                    MessageBox.Show("联系人姓名重复，请重新输入", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    isRepeated = true;
+                    break;
+                }
+            }
+
+            if(isRepeated == false) {
+                int selectedIndex = contactsListBox.SelectedIndex;
+                viewModel.editContact(contacts[selectedIndex], name);
+            }
+        }
+
+        // 同步
+        private void sync_Click(object sender, RoutedEventArgs e)
+        {
+            viewModel.queryAllContacts();
+        }
+
+        // 导出
+        private void export_Click(object sender, RoutedEventArgs e)
+        {
+            object oMissing = Missing.Value;
+            object oEndOfDoc = "\\endofdoc"; /* \endofdoc is a predefined bookmark */
+
+            _Application oWord;
+            _Document oDoc;
+            oWord = new Microsoft.Office.Interop.Word.Application();
+            oWord.Visible = true;
+            oDoc = oWord.Documents.Add(ref oMissing, ref oMissing,
+                ref oMissing, ref oMissing);
+
+            for(int i = 0; i < noteListBox.Items.Count; i++) {
+                Paragraph oPara1;
+                oPara1 = oDoc.Content.Paragraphs.Add(ref oMissing);
+                NoteObject note = (NoteObject)noteListBox.Items[i];
+                oPara1.Range.Text = note.updatedAt + "\n" + note.text+"\n";
+                oPara1.Range.InsertParagraphAfter();
+            }
+        }
+
+        private void copyNote_Click(object sender, RoutedEventArgs e)
+        {
+            NoteObject note = (NoteObject)noteListBox.Items[noteListBox.SelectedIndex];
+            Clipboard.SetText(note.text);
+        }
+
+        private void editNote_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = noteListBox.SelectedIndex;
+            if(selectedIndex != -1) {
+                NoteBox noteWindow = new NoteBox();
+                NoteObject note = (NoteObject)noteListBox.Items[selectedIndex];
+                noteWindow.noteTextBox.Text = note.text;
+                noteWindow.editNoteDelegate += new EditNoteDelegate(didEditNoteAction);
+                noteWindow.ShowDialog();
+            }
+        }
+
+        private void didEditNoteAction(string newNoteText)
+        {
+            ContactObject contact = this.contacts[contactsListBox.SelectedIndex];
+            NoteObject note = (NoteObject)noteListBox.Items[noteListBox.SelectedIndex];
+            viewModel.editNote(contact,note, newNoteText);
+        }
+
+        private void deleteNote_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = contactsListBox.SelectedIndex;
+            if(selectedIndex != -1) {
+                ContactObject contact = this.contacts[selectedIndex];
+                NoteObject note = (NoteObject)noteListBox.Items[noteListBox.SelectedIndex];
+                viewModel.deleteNote(contact, note);
+            }
+
+        }
     }
 
 }

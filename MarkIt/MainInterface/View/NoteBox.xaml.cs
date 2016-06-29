@@ -1,14 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace MarkIt.MainInterface
 {
-    public delegate void AddContactDelegate(string text);
+    public delegate void EditNoteDelegate(string text);
 
-    public partial class AddContactBox: Window
+    public partial class NoteBox: Window
     {
-        public AddContactBox()
+        public NoteBox()
         {
             InitializeComponent();
 
@@ -16,12 +26,12 @@ namespace MarkIt.MainInterface
             this.Icon = BitmapFrame.Create(iconUri);
         }
 
-        public event AddContactDelegate didAddContactDelegate;
+        public event EditNoteDelegate editNoteDelegate;
 
         private void confirmButton_Click(object sender, RoutedEventArgs e)
         {
-            //触发事件，将联系人信息回传到listbox中
-            didAddContactDelegate(contactTextBox.Text);
+            editNoteDelegate(noteTextBox.Text);
+
             this.Close();
         }
 
@@ -30,5 +40,4 @@ namespace MarkIt.MainInterface
             this.Close();
         }
     }
-
 }

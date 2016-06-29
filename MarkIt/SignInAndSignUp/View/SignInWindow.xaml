@@ -5,16 +5,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkIt"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
         Title="登录"
         Height="520"
         Width="380"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        WindowStyle="None"
-        Background="#FF2D2D30"
+        WindowStyle="None"  
         BorderBrush="White">
-    <Grid Background="#FF2D2D30">
+    
+    <Grid Background="#FF37474F">
         <Button x:Name="closeButton"
                 HorizontalAlignment="Right"
                 Margin="0"
@@ -42,8 +47,7 @@
                  VerticalAlignment="Top"
                  Width="320"
                  FontWeight="Bold"
-                 FontSize="18"
-                 BorderBrush="{x:Null}" />
+                 FontSize="18" />
         <Label x:Name="emailMessage"
                Margin="30,160,250,300"
                Background="{x:Null}"
@@ -94,38 +98,40 @@
         <Button x:Name="forgetPasswordButton"
                 Content="忘记密码"
                 HorizontalAlignment="Left"
-                Margin="30,381,0,0"
+                Margin="20,381,0,0"
                 VerticalAlignment="Top"
-                Width="56"
+                Width="75"
                 Background="{x:Null}"
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
                 FontWeight="Bold" 
+                FontSize="10"
                 Click="forgetPasswordButton_Click"/>
         <Button x:Name="changePasswordButton"
                 Content="修改密码"
                 HorizontalAlignment="Left"
-                Margin="290,381,0,0"
+                Margin="280,381,0,0"
                 VerticalAlignment="Top"
-                Width="56"
+                Width="75"
                 Background="{x:Null}"
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
                 FontWeight="Bold" 
+                FontSize="10"
                 Click="changePasswordButton_Click"/>
         <Button x:Name="signUpButton"
                 Content="注册"
                 HorizontalAlignment="Left"
-                Margin="170,381,0,0"
+                Margin="160,381,0,0"
                 VerticalAlignment="Top"
-                Width="35"
+                Width="60"
                 Background="{x:Null}"
                 BorderBrush="{x:Null}"
                 Foreground="#FF159BE8"
                 FontWeight="Bold"
                 Click="signUpButton_Click" />
 
-        
+
 
     </Grid>
 

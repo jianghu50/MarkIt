@@ -10,7 +10,8 @@ using System.Windows;
 
 namespace MarkIt.MainInterface
 {
-    public delegate void ContactsDidChangedDelegate(string[] contacts);
+    public delegate void ContactsDidChangedDelegate(List<ContactObject> contacts);
+    public delegate void NotesDidChangedDelegate(List<NoteObject> notes);
 
     class MainWindowViewModel
     {
@@ -21,6 +22,7 @@ namespace MarkIt.MainInterface
         private const string noteTableName = "Note";
 
         public event ContactsDidChangedDelegate contactsDidChangedDelegate;
+        public event NotesDidChangedDelegate notesDidChangedDelegate;
 
         public MainWindowViewModel(BmobUser user)
         {
@@ -28,19 +30,51 @@ namespace MarkIt.MainInterface
         }
         
         // 添加联系人
-        public void addContact(String name)
+        public void addContact(string name)
         {
             ContactObject contact = new ContactObject();
             contact.contactName = name;
             contact.user = user;
 
-            var future = service.Bmob.CreateTaskAsync(contact);
-            try {
-                string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
-                MessageBox.Show("添加联系人成功\ncontact id："+future.Result.objectId);
-            } catch {
-                MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
-            }
+            service.Bmob.Create(contactTableName, contact, (resp, exception) =>
+            {
+                if(exception != null) {
+                    MessageBox.Show("添加联系人失败, 失败原因为： " + exception.Message);
+                    return;
+                }
+                queryAllContacts();
+            });
+        }
+
+        // 删除联系人
+        public void deleteContact(ContactObject contact)
+        {
+            service.Bmob.Delete(contactTableName, contact.objectId, (resp, exception) =>
+            {
+                if(exception != null) {
+                    MessageBox.Show("删除联系人失败, 失败原因为： " + exception.Message);
+                    return;
+                }
+
+                this.queryAllContacts();
+            });
+        }
+
+        // 编辑联系人
+        public void editContact(ContactObject contact, string newName)
+        {
+            ContactObject newContact = new ContactObject();
+            newContact.contactName = newName;
+
+            service.Bmob.Update(contactTableName, contact.objectId, newContact, (resp, exception) =>
+            {
+                if(exception != null) {
+                    MessageBox.Show("编辑联系人, 失败原因为： " + exception.Message);
+                    return;
+                }
+
+                this.queryAllContacts();
+            });
         }
 
         // 查询所有联系人
@@ -52,75 +86,78 @@ namespace MarkIt.MainInterface
             service.Bmob.Find<ContactObject>(contactTableName, query, (resp, exception) =>
             {
                 if(exception != null) {
-                    MessageBox.Show("查询失败, 失败原因为： " + exception.Message);
+                    MessageBox.Show("查询联系人失败, 失败原因为： " + exception.Message);
                     return;
                 }
 
-                List<string> contacts = new List<string>();
-                foreach(ContactObject contact in resp.results) {
-                    contacts.Add(contact.contactName);
-                }
-                contactsDidChangedDelegate(contacts.ToArray());
+                List<ContactObject> contacts = resp.results;
+                contactsDidChangedDelegate(contacts);
             });
         }
 
-        //编辑联系人
-        private void EditContact()
+        // 查询contact的所有聊天记录
+        public void queryNote(ContactObject contact)
         {
-            //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject();
-            contact.contactName = "你要修改的信息";
-            contact.objectId = "你要修改的联系人的ID";
-            //有2种新建方法，带有Task功能
-            //public Task<UpdateCallbackData> UpdateTaskAsync(string tablename, string objectId, IBmobWritable data);
-            //public Task<UpdateCallbackData> UpdateTaskAsync<T>(T data) where T : BmobTable;
-            //保存数据，采用第二种方法，返回的future可以输出信息
-            var future = service.Bmob.UpdateTaskAsync<ContactObject>(contact);
+            var query = new BmobQuery();
+            query.OrderByDescending("updatedAt");
+            query.WhereEqualTo("contact", new BmobPointer<ContactObject>(contact));
+            service.Bmob.Find<NoteObject>(noteTableName, query, (resp, exception) => {
+                if(exception != null) {
+                    MessageBox.Show("查询聊天列表失败, 失败原因为： " + exception.Message);
+                    return;
+                }
 
+                List<NoteObject> notes = resp.results;
+                notesDidChangedDelegate(notes);
+            });
         }
 
-        //删除联系人
-        private void DeleteContact()
+        // 添加聊天内容
+        public void addNote(ContactObject contact, string noteContent)
         {
-            //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject();
-            contact.objectId = "你要删除的联系人的ID";
-            //有2种新建方法，带有Task功能
-            //public Task<DeleteCallbackData> DeleteTaskAsync(string tablename, string objectId);
-            //public Task<DeleteCallbackData> DeleteTaskAsync<T>(T data) where T : BmobTable;
-            //保存数据，采用第二种方法,返回的future可以输出信息
-            var future = service.Bmob.DeleteTaskAsync<ContactObject>(contact);
-        }
-
-        //新建笔记文本
-        private void CreateNoteText()
-        {
-            //在构造的时候指定了数据表
-            ContactObject contact = new ContactObject();
-            contact.objectId = "你要绑定的联系人的ID";
-            //在构造时指定了数据表
             NoteObject note = new NoteObject();
-            //添加数据关联，即添加外键
             note.contact = contact;
-            note.text = "用户输入的文本信息(可能含表情)";
-            //因为是纯文本，无图片
+            note.text = noteContent;
             note.image = null;
-            //有2种新建方法，带有Task功能
-            //public Task<CreateCallbackData> CreateTaskAsync(string tablename, IBmobWritable data);data=contact
-            //public Task<CreateCallbackData> CreateTaskAsync<T>(T data) where T : BmobTable;
-            //保存数据，采用第二种方法,返回的future可以输出信息
-            var future = service.Bmob.CreateTaskAsync<NoteObject>(note);
-            // 用 future 来输出成功与否的信息
-            //try
-            //{
-            //    string s = JsonAdapter.JSON.ToDebugJsonString(future.Result);
-            //    Console.WriteLine(s);
-            //}
-            //catch
-            //{
-            //    MessageBox.Show("创建失败，原因：" + future.Exception.InnerException.ToString());
-            //}
 
+            service.Bmob.Create(noteTableName, note, (resp, exception) =>
+            {
+                if(exception != null) {
+                    MessageBox.Show("添加聊天内容失败, 失败原因为： " + exception.Message);
+                    return;
+                }
+
+                this.queryNote(contact);
+            });
+        }
+
+        // 删除聊天内容
+        public void deleteNote(ContactObject contact, NoteObject note)
+        {
+            service.Bmob.Delete(noteTableName, note.objectId, (resp, exception) => {
+                if(exception != null) {
+                    MessageBox.Show("删除聊天内容失败, 失败原因为： " + exception.Message);
+                    return;
+                }
+
+                this.queryNote(contact);
+            });
+        }
+
+        // 编辑聊天内容
+        public void editNote(ContactObject contact, NoteObject note, string newNoteText)
+        {
+            NoteObject newNote = new NoteObject();
+            newNote.text = newNoteText;
+
+            service.Bmob.Update(noteTableName, note.objectId, newNote, (resp, exception) => {
+                if(exception != null) {
+                    MessageBox.Show("编辑聊天内容, 失败原因为： " + exception.Message);
+                    return;
+                }
+
+                this.queryNote(contact);
+            });
         }
 
         //新建笔记图片,方法的前面添加了 async 关键字
@@ -160,26 +197,6 @@ namespace MarkIt.MainInterface
         }
         //跟上面那个乱七八糟的方法是同一条船的。
         //delegate void doUiThread();
-
-        
-
-        private void QueryNote()
-        {
-            //查找表中的全部数据（默认最多返回10条数据）,方便分页查询，后面我贴出分页查询的方法
-            //先定义个查询对象
-            var query = new BmobQuery();
-            //按发布时间降序排列
-            query.OrderByDescending("updatedAt");
-            //获取当前点击的联系人信息
-            //TestContactObject contact = UI中点击获取
-            //查询当前用户的所有联系人，第一个参数为对应的字段，请注意
-            //query.WhereEqualTo("contact", new BmobPointer<TestContactObject>(contact));
-            // or use
-            // query.WhereMatchesQuery("user", user);
-            //查询的结果在future中
-            var future = service.Bmob.FindTaskAsync<NoteObject>(noteTableName, query);
-            //对返回结果进行处理,future本身就是一个list了。 不过可能需要类型转换一下，我也不会。
-        }
 
         /**
          * 在数据比较多的情况下，你往往需要显示加载一部分数据就可以了，这样可以节省用户的流量和提升数据加载速度，

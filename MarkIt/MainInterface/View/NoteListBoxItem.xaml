@@ -1,0 +1,106 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DataTemplate x:Key="noteItemTemplate">
+        <Grid Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="{Binding Path=updatedAt}"
+                       Grid.Column="0"
+                       Grid.Row="0" />
+            <TextBlock Text="{Binding Path=text}"
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Grid.Column="0"
+                       Grid.Row="1" />
+        </Grid>
+    </DataTemplate>
+
+    <Style x:Key="noteListBoxItemStyle"
+           TargetType="{x:Type ListBoxItem}">
+        <Setter Property="OverridesDefaultStyle"
+                Value="True"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Grid x:Name="grid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Border x:Name="hover"
+                                Background="#99E7E7E7"
+                                BorderBrush="#99979797"
+                                BorderThickness="1"
+                                CornerRadius="3"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Visibility="Collapsed">
+                        </Border>
+                        <Border x:Name="highlight"
+                                Background="#99B0FFA5"
+                                BorderBrush="#995CB74E"
+                                BorderThickness="1"
+                                CornerRadius="3"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Visibility="Collapsed">
+                        </Border>
+                        <ContentPresenter></ContentPresenter>
+                        <Border Height="1"
+                                BorderBrush="#99D7D7D7"
+                                BorderThickness="0,1,0,0"
+                                Grid.Row="1">
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="hover"
+                                    Property="Visibility"
+                                    Value="Visible">
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsSelected"
+                                 Value="True">
+                            <Setter TargetName="highlight"
+                                    Property="Visibility"
+                                    Value="Visible">
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="noteListBox"
+           TargetType="{x:Type ListBox}">
+        <Setter Property="OverridesDefaultStyle"
+                Value="True"></Setter>
+        <Setter Property="ItemContainerStyle"
+                Value="{StaticResource ResourceKey=noteListBoxItemStyle}"></Setter>
+        <Setter Property="ItemTemplate"
+                Value="{StaticResource ResourceKey=noteItemTemplate}"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border BorderBrush="#B3B3B3"
+                            BorderThickness="1">
+                        <ScrollViewer Margin="1">
+                            <ItemsPresenter Margin="1"></ItemsPresenter>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

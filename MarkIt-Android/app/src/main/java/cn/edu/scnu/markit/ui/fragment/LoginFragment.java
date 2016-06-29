@@ -1,8 +1,11 @@
 package cn.edu.scnu.markit.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +25,6 @@ import cn.edu.scnu.markit.R;
 import cn.edu.scnu.markit.javabean.User;
 import cn.edu.scnu.markit.ui.ForgetPasswordActivity;
 import cn.edu.scnu.markit.util.CommonUtils;
-import cn.edu.scnu.markit.util.MyDatabaseManager;
 
 /**
  * Created by jialin on 2016/4/29.
@@ -40,6 +42,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     final String my_email = "909392891@qq.com";
     final String my_password = "123456";
 
+    private ProgressDialog mProgressDialog;
+
+    private Handler mHandler = null;
+
+    public static final int LOGIN_SUCCESS = 1;
+    public static final int LOGIN_FAIL = 2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -54,6 +63,17 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         initViews();
     }
 
+    private void initHandler(){
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (LOGIN_SUCCESS == msg.what || LOGIN_FAIL == msg.what){
+                    mProgressDialog.dismiss();
+                }
+            }
+        };
+    }
+
     private void initViews(){
 
         mEmail = (EditText)loginView.findViewById(R.id.login_email_edit);
@@ -65,6 +85,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         mForgetPassword = (TextView)loginView.findViewById(R.id.login_forget_password);
         mForgetPassword.setOnClickListener(this);
+
+        mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setMessage("正在登陆...");
+        mProgressDialog.setCancelable(false);
+
+        initHandler();
     }
 
     @Override
@@ -104,6 +130,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
 
 
+        mProgressDialog.show();
+
         Log.i("bmobTest","email = " + email + "password = " + password);
 
         final boolean rememberMe = mCheckBox.isChecked();
@@ -116,14 +144,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onSuccess() {
                 // TODO Auto-generated method stub
-                toast(bu2.getUsername() + "登陆成功");
+                //toast(bu2.getUsername() + "登陆成功");
                 //testGetCurrentUser();
 
                 //新建一个没有界面的的activity，判断进入登录界面还是主界面
                 //配置文件记录登录成功,且用户选择记住操作，再次启动时，判断是否登录成功过，是则直接跳到主页面
                 if (rememberMe){
                     SharedPreferences sharedPreferences;
-                    sharedPreferences = getActivity().getSharedPreferences("isLoginSuccess",0);
+                    sharedPreferences = getActivity().getSharedPreferences("Login",0);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("loginSucceed",true);
                     editor.putString("userId",bu2.getObjectId());
@@ -131,7 +159,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 }
 
                 //添加用户到用户表
-                MyDatabaseManager.insertUser(bu2.getObjectId(),bu2.getUsername(),password);
+                //MyDatabaseManager.insertUser(bu2.getObjectId(),bu2.getUsername(),password);
+
+                Message msg = Message.obtain();
+                msg.what = LOGIN_SUCCESS;
+                mHandler.sendMessage(msg);
 
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
@@ -143,6 +175,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFailure(int code, String msg) {
                 // TODO Auto-generated method stub
+                Message message = Message.obtain();
+                message.obj = message;
+                message.what = LOGIN_FAIL ;
+                mHandler.sendMessage(message);
+
                 toast("登陆失败:" + code + "," + msg);
             }
         });

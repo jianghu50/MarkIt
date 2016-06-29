@@ -54,6 +54,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>quote\Bmob-Windows.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=1.5.0.523, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MaterialDesignThemes.1.5.0.523\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -78,8 +86,11 @@
     </ApplicationDefinition>
     <Compile Include="MainInterface\Model\ContactObject.cs" />
     <Compile Include="MainInterface\Model\NoteObject.cs" />
-    <Compile Include="MainInterface\View\AddContactBox.xaml.cs">
-      <DependentUpon>AddContactBox.xaml</DependentUpon>
+    <Compile Include="MainInterface\View\ContactBox.xaml.cs">
+      <DependentUpon>ContactBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainInterface\View\NoteBox.xaml.cs">
+      <DependentUpon>NoteBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignInAndSignUp\Model\UserObject.cs" />
     <Compile Include="MainInterface\ViewModel\MainWindowViewModel.cs" />
@@ -90,9 +101,17 @@
       <DependentUpon>TestUserData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\Service.cs" />
-    <Page Include="MainInterface\View\AddContactBox.xaml">
+    <Page Include="MainInterface\View\ContactBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainInterface\View\NoteBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainInterface\View\NoteListBoxItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SignInAndSignUp\View\SignInWindow.xaml">
       <SubType>Designer</SubType>
@@ -144,6 +163,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -176,6 +196,35 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

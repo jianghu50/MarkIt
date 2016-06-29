@@ -4,16 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MarkIt.SignInAndSignUp.View"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
         mc:Ignorable="d"
         Title="注册"
         Height="520"
         Width="380"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        WindowStyle="None"
-        Background="#FF2D2D30"
+        WindowStyle="None"  
         BorderBrush="White">
-    <Grid>
+    
+    <Grid Background="#FF37474F">
         <Button x:Name="backButton"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -40,8 +45,7 @@
                  VerticalAlignment="Top"
                  Width="320"
                  FontWeight="Bold"
-                 FontSize="18"
-                 BorderBrush="{x:Null}"/>
+                 FontSize="18"/>
         <Label x:Name="emailIsOrNotSignUp"
                Margin="30,160,250,330"
                Background="{x:Null}"

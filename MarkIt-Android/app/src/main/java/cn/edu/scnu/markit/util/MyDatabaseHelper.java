@@ -22,14 +22,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_CONTACTS_TABLE = "create table Contacts ("
             + "id integer primary key autoincrement, "
             + "contactName text, "
-            + "userId text"
+            + "userId text, "
+            + "objectId text"
             + ")";
     /**
      * 聊天笔记表
      */
     public static final String CREATE_NOTES_TABLE = "create table Notes ("
             + "id integer primary key autoincrement, "
-            + "contactId integer, "
+            + "objectId text, "
+            + "contactId text, "
             + "contactName text, "
             + "note text, "
             + "image text, "

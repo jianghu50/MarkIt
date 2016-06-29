@@ -8,16 +8,16 @@ public class LatestNoteOfContacts {
     /**
      * 联系人id,便于点击时，根据id,查询其全部笔记
      */
-    private int contactId;
+    private String contactId;
     private String contactName;
     private String note;
     private String date;
 
-    public int getContactId() {
+    public String getContactId() {
         return contactId;
     }
 
-    public void setContactId(int contactId) {
+    public void setContactId(String contactId) {
         this.contactId = contactId;
     }
 

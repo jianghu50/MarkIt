@@ -3,7 +3,7 @@ using cn.bmob.io;
 
 namespace MarkIt.MainInterface
 {
-    class NoteObject: BmobTable
+    public class NoteObject: BmobTable
     {
         //对应的数据表 笔记对应的数据表名为：“Note”
         private const String tableName = "Note";
@@ -27,6 +27,7 @@ namespace MarkIt.MainInterface
         //构造函数
         public NoteObject()
         {
+            isDelete = false;
         }
 
         public override string table {
